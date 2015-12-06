@@ -3,6 +3,7 @@
 
 class BitWiseArray
 {
+// this class is a circular bit wise array 
 public:
 	BitWiseArray(uint32_t sizeInBit);
 	uint32_t getSize();
