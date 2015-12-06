@@ -9,26 +9,51 @@
 #include "BloomFilter.h"
 #include "IHasher.h"
 #include "MurmurHasher.h"
-
+#include "DataBaseConfiguration.h"
+#include "DataBaseHandler.h"
 using namespace std;
 
 int main() {
-	unsigned int m = 10010;
-	unsigned int k = 5;
-	IHasher* hasher = new MurmurHasher();
-	BloomFilter* bf = new BloomFilter(m, k, hasher);
-
-	string key1 = "aymen";
-	string key2 = "abi";
-	bf->addKey(key1);
-
-	if (bf->readKey(key2))
-	{
-		cout << key2 << " exists in the set (normally), with a risk of ERROR !" << endl;
+	DataBaseConfiguration dataBaseConfiguration;
+	dataBaseConfiguration.contactPoints = "127.0.0.1";
+	dataBaseConfiguration.keySpace = "documentDataBase";
+	dataBaseConfiguration.table = "documentTable";
+	DataBaseHandler *dataBaseHandler = new DataBaseHandler(dataBaseConfiguration);
+	/*Document d1, d2, d3;
+	d1.documentNumber = "1";
+	d1.documentType = "11";
+	d1.countryCode = "111";
+	d2.documentNumber = "2";
+	d2.documentType = "22";
+	d2.countryCode = "222";
+	d3.documentNumber = "3";
+	d3.documentType = "33";
+	d3.countryCode = "333";
+	dataBaseHandler->addDocument(&d1);
+	dataBaseHandler->addDocument(&d2);
+	dataBaseHandler->addDocument(&d3);
+	delete dataBaseHandler;*/
+	/*Document *d1 = dataBaseHandler->getDocumentByNumber("4");
+	if (d1 != nullptr) {
+		cout << "document number :";
+		cout << d1->documentNumber<<endl;
+		cout << "document type :";
+		cout << d1->documentType << endl;
+		cout << "country code :";
+		cout << d1->countryCode<<endl;
 	}
-	else
-	{
-		cout << key2 << " key doesn't exists in the set (certainly)" << endl;
+	else {
+		cout << "pb" << endl;
+	}*/
+	DocumentIterator * documentIterator = dataBaseHandler->getDocumentIterator();
+	Document * document;
+	while ((document = documentIterator->getNextDocument()) != nullptr) {
+		cout << "document number :";
+		cout << document->documentNumber << endl;
+		cout << "document type :";
+		cout << document->documentType << endl;
+		cout << "country code :";
+		cout << document->countryCode << endl;
 	}
-	system("Pause");
+	system("pause");
 }

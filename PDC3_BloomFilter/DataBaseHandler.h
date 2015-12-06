@@ -15,6 +15,6 @@ public:
 	DataBaseHandler(DataBaseConfiguration dataBaseConfiguration);
 	Document * getDocumentByNumber(string documentNumber);
 	bool addDocument(Document * document);
-	DocumentIterator * getDocumentIterator(string countryCode = "", string documentType = "");
+	DocumentIterator * getDocumentIterator(string countryCode = "");
 	~DataBaseHandler();
 };
