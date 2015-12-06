@@ -4,8 +4,6 @@
 class DataBaseGenerator {
 private:
 	DataBaseConfiguration dataBaseConfiguration;
-	
-
 public:
 	DataBaseGenerator(DataBaseConfiguration dataBaseConfiguration, unsigned int dataBaseSize);
 	bool generate();
