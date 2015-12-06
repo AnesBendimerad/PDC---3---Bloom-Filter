@@ -6,7 +6,7 @@ private:
 	CassResult* result;
 	CassIterator* rows;
 public:
-	DocumentIterator(CassResult* result);
+	DocumentIterator(const CassResult* result);
 	Document * getNextDocument();
 	~DocumentIterator();
 };
