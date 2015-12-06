@@ -81,7 +81,7 @@
       <Filter>Source Files\models</Filter>
     </ClCompile>
     <ClCompile Include="HashIterator.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\models</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
