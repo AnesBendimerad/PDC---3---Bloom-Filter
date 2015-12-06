@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "DataBaseHandler.h"
 
 DataBaseHandler::DataBaseHandler(DataBaseConfiguration dataBaseConfiguration)
