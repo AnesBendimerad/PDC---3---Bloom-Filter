@@ -78,6 +78,9 @@
     <ClInclude Include="DataBaseGenerator.h">
       <Filter>Header Files\controllers</Filter>
     </ClInclude>
+    <ClInclude Include="BitWiseArray.h">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -106,6 +109,9 @@
     </ClCompile>
     <ClCompile Include="DataBaseGenerator.cpp">
       <Filter>Source Files\controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="BitWiseArray.cpp">
+      <Filter>Source Files\models</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
