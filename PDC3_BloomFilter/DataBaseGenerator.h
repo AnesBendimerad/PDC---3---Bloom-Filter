@@ -10,7 +10,7 @@ class DataBaseGenerator {
 private:
 	DataBaseConfiguration dataBaseConfiguration;
 	unsigned int dataBaseSize;
-	string RandomString(int len);
+	string RandomString(unsigned int len);
 	bool executeQuery(string query);
 
 public:

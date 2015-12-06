@@ -8,24 +8,23 @@ using namespace std;
 
 DataBaseGenerator::DataBaseGenerator(DataBaseConfiguration dataBaseConfiguration, unsigned int dataBaseSize)
 {
-	this->dataBaseConfiguration = dataBaseConfiguration;
-	this->dataBaseSize = dataBaseSize;
+	DataBaseGenerator::dataBaseConfiguration = dataBaseConfiguration;
+	DataBaseGenerator::dataBaseSize = dataBaseSize;
 }
 
 bool DataBaseGenerator::generate()
 {
-
-	string index = " CREATE INDEX countryCode_index ON bloom_filter.document(" + string(COUNTRY_CODE) + "); ";
-	string table = "create table bloom_filter.document ( " + string(DOCUMENT_NUMBER) + " varchar primary key, " + string(DOCUMENT_TYPE) + " varchar, " + string(COUNTRY_CODE) + " varchar); ";
-	string keyspace = "create keyspace bloom_filter with replication={'class':'SimpleStrategy', 'replication_factor':1};";
+	string keyspace = "create keyspace " + DataBaseGenerator::dataBaseConfiguration.keySpace + " with replication={'class':'SimpleStrategy', 'replication_factor':1};";
+	string index = " CREATE INDEX countryCode_index ON " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + "(" + string(COUNTRY_CODE) + "); ";
+	string table = "create table " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + " ( " + string(DOCUMENT_NUMBER) + " varchar primary key, " + string(DOCUMENT_TYPE) + " varchar, " + string(COUNTRY_CODE) + " varchar); ";
 
 	executeQuery(keyspace);
 	executeQuery(table);
 	executeQuery(index);
 
-	DataBaseHandler * dbh = new DataBaseHandler(this->dataBaseConfiguration);
+	DataBaseHandler * dbh = new DataBaseHandler(DataBaseGenerator::dataBaseConfiguration);
 	Document doc;
-	 int i = 0;
+	unsigned int i = 0;
 	while (i < dataBaseSize){
 		 
 		doc.documentNumber = std::to_string(i);
@@ -41,11 +40,11 @@ bool DataBaseGenerator::generate()
 }
 
 
-string DataBaseGenerator::RandomString(int len)
+string DataBaseGenerator::RandomString(unsigned int len)
 {
 	srand(time(0));
 	string str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	int pos;
+	unsigned int pos;
 	while (str.size() != len) {
 		pos = ((rand() % (str.size() - 1)));
 		str.erase(pos, 1);

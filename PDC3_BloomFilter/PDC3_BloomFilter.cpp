@@ -9,26 +9,18 @@
 #include "BloomFilter.h"
 #include "IHasher.h"
 #include "MurmurHasher.h"
+#include "DataBaseGenerator.h"
 
 using namespace std;
 
 int main() {
-	unsigned int m = 10010;
-	unsigned int k = 5;
-	IHasher* hasher = new MurmurHasher();
-	BloomFilter* bf = new BloomFilter(m, k, hasher);
+	DataBaseConfiguration config;
+	config.contactPoints = "127.0.0.1";
+	config.keySpace = "documentDataBase";
+	config.table = "documentTable";
 
-	string key1 = "aymen";
-	string key2 = "abi";
-	bf->addKey(key1);
-
-	if (bf->readKey(key2))
-	{
-		cout << key2 << " exists in the set (normally), with a risk of ERROR !" << endl;
-	}
-	else
-	{
-		cout << key2 << " key doesn't exists in the set (certainly)" << endl;
-	}
+	DataBaseGenerator* generator = new DataBaseGenerator(config,1000);
+	generator->generate();
+	delete generator;
 	system("Pause");
 }
