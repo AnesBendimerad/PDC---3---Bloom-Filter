@@ -54,26 +54,26 @@
     <ClInclude Include="HashIterator.h">
       <Filter>Header Files\models</Filter>
     </ClInclude>
-    <ClInclude Include="MurmurHasher.h">
+    <ClInclude Include="Document.h">
+      <Filter>Header Files\structures</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBaseConfiguration.h">
+      <Filter>Header Files\structures</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBaseHandler.h">
+      <Filter>Header Files\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="DocumentIterator.h">
       <Filter>Header Files\models</Filter>
     </ClInclude>
     <ClInclude Include="BloomFilter.h">
       <Filter>Header Files\models</Filter>
     </ClInclude>
-    <ClInclude Include="DataBaseConfiguration.h">
-      <Filter>Header Files\structures</Filter>
-    </ClInclude>
-    <ClInclude Include="Document.h">
-      <Filter>Header Files\structures</Filter>
-    </ClInclude>
-    <ClInclude Include="DocumentIterator.h">
-      <Filter>Header Files\models</Filter>
-    </ClInclude>
-    <ClInclude Include="DataBaseHandler.h">
-      <Filter>Header Files\controllers</Filter>
-    </ClInclude>
     <ClInclude Include="BloomFilterBasedDBController.h">
       <Filter>Header Files\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="MurmurHasher.h">
+      <Filter>Header Files\models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -83,23 +83,23 @@
     <ClCompile Include="PDC3_BloomFilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="HashIterator.cpp">
+    <ClCompile Include="DataBaseHandler.cpp">
+      <Filter>Source Files\controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="DocumentIterator.cpp">
       <Filter>Source Files\models</Filter>
     </ClCompile>
-    <ClCompile Include="MurmurHasher.cpp">
+    <ClCompile Include="HashIterator.cpp">
       <Filter>Source Files\models</Filter>
     </ClCompile>
     <ClCompile Include="BloomFilter.cpp">
       <Filter>Source Files\models</Filter>
     </ClCompile>
-    <ClCompile Include="DocumentIterator.cpp">
-      <Filter>Source Files\models</Filter>
-    </ClCompile>
     <ClCompile Include="BloomFilterBasedDBController.cpp">
       <Filter>Source Files\controllers</Filter>
     </ClCompile>
-    <ClCompile Include="DataBaseHandler.cpp">
-      <Filter>Source Files\controllers</Filter>
+    <ClCompile Include="MurmurHasher.cpp">
+      <Filter>Source Files\models</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
