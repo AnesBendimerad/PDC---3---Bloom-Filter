@@ -6,7 +6,9 @@ bool BloomFilterBasedDBController::addDocument(Document * document)
 	if (dbHandler->addDocument(document))
 	{
 		bloomFilter->addKey(document->documentNumber);
+		return true;
 	}
+	return false;
 }
 
 bool BloomFilterBasedDBController::doesDocumentNumberExist(string documentNumber, unsigned int verificationType)
