@@ -154,6 +154,7 @@
     <ClInclude Include="Document.h" />
     <ClInclude Include="DocumentIterator.h" />
     <ClInclude Include="HashIterator.h" />
+    <ClInclude Include="BitWiseArray.h" />
     <ClInclude Include="MurmurHasher.h" />
     <ClInclude Include="IHasher.h" />
     <ClInclude Include="stdafx.h" />
@@ -166,6 +167,7 @@
     <ClCompile Include="PDC3_BloomFilter.cpp" />
     <ClCompile Include="HashIterator.cpp" />
     <ClCompile Include="MurmurHasher.cpp" />
+    <ClCompile Include="BitWiseArray.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
