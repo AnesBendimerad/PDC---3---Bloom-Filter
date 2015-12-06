@@ -6,32 +6,30 @@
 #include <cassandra.h>
 #include <conio.h>
 #include <stdio.h>
-#include "BitWiseArray.h"
+#include "BloomFilter.h"
+#include "IHasher.h"
+#include "MurmurHasher.h"
 
 using namespace std;
 
 int main() {
-	unsigned int N = 33;
-	unsigned int i = 12;
-	BitWiseArray* bitWiseArray = new BitWiseArray(N);
+	unsigned int m = 33;
+	unsigned int k = 5;
+	IHasher* hasher = new MurmurHasher();
+	BloomFilter* bf = new BloomFilter(m, k, hasher);
 
-	for (unsigned int j = 0;j < N;j++) {
-		cout << j << " : " << bitWiseArray->get(j) << endl;
+	string key1 = "aymen";
+	string key2 = "aymen";
+	bf->addKey(key1);
+
+	if (bf->readKey(key2))
+	{
+		cout << key2 << " exists in the set (normally), with a risk of ERROR !" << endl;
 	}
-	bitWiseArray->set(i);
-	bitWiseArray->set(i+1);
-	cout << "--------------------------------" << endl;
-	for (unsigned int j = 0;j < N;j++) {
-		cout << j << " : " << bitWiseArray->get(j) << endl;
+	else
+	{
+		cout << key2 << " key doesn't exists in the set (certainly)" << endl;
 	}
-	bitWiseArray->unset(i);
-	cout << "--------------------------------" << endl;
-	for (unsigned int j = 0;j < N;j++) {
-		cout << j << " : " << bitWiseArray->get(j) << endl;
-	}
-	
+
 	system("Pause");
-
-
-
 }
