@@ -82,17 +82,12 @@ bool DataBaseHandler::addDocument(Document * document)
 	return returnedValue;
 }
 
-DocumentIterator * DataBaseHandler::getDocumentIterator(string countryCode, string documentType)
+DocumentIterator * DataBaseHandler::getDocumentIterator(string countryCode)
 {
 	string query = "SELECT * FROM " + dataBaseConfiguration.keySpace
 		+ "." + dataBaseConfiguration.table;
-	string word = " WHERE ";
 	if (countryCode.compare("") != 0) {
-		query = query + word + COUNTRY_CODE + " = '" + countryCode + "'";
-		word = " AND ";
-	}
-	if (documentType.compare("") != 0) {
-		query = query + word + DOCUMENT_TYPE + " = '" + documentType + "'";
+		query = query + " WHERE " + COUNTRY_CODE + " = '" + countryCode + "'";
 	}
 	const CassResult* result = getResultOfQuery(query);
 	if (result != nullptr) {
@@ -108,7 +103,4 @@ DataBaseHandler::~DataBaseHandler()
 	cass_future_free(connect_future);
 	cass_session_free(session);
 	cass_cluster_free(cluster);
-	delete session;
-	delete connect_future;
-	delete cluster;
 }
