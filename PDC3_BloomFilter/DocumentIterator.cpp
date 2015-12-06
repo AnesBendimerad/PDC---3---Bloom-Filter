@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "DocumentIterator.h"
 
-DocumentIterator::DocumentIterator(CassResult * result)
+DocumentIterator::DocumentIterator(const CassResult * result)
 {
 }
 
