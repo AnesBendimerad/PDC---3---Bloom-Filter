@@ -1,5 +1,14 @@
 #include "stdafx.h"
 #include "BloomFilterBasedDBController.h"
+#include "DataBaseHandler.h"
+#include "MurmurHasher.h"
+
+BloomFilterBasedDBController::BloomFilterBasedDBController(DataBaseConfiguration dataBaseConfiguration, uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
+{
+	BloomFilterBasedDBController::dbHandler = new DataBaseHandler(dataBaseConfiguration);
+	if (bloomFilterHashFunction == nullptr) bloomFilterHashFunction = new MurmurHasher();
+	BloomFilterBasedDBController::bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
+}
 
 bool BloomFilterBasedDBController::addDocument(Document * document)
 {
@@ -37,4 +46,6 @@ bool BloomFilterBasedDBController::doesDocumentNumberExist(string documentNumber
 
 BloomFilterBasedDBController::~BloomFilterBasedDBController()
 {
+	delete BloomFilterBasedDBController::dbHandler;
+	delete BloomFilterBasedDBController::bloomFilter;
 }
