@@ -15,14 +15,21 @@ string DocumentIterator::getColumnValue(const CassRow * row, string columnName)
 	const char* keyspace;
 	size_t keyspace_length;
 	cass_value_get_string(value, &keyspace, &keyspace_length);
-	return string(keyspace);
+	char *resultAsChar = (char*)malloc(sizeof(char)*(keyspace_length + 1));
+	for (unsigned int i = 0; i < keyspace_length; i++) {
+		resultAsChar[i] = keyspace[i];
+	}
+	resultAsChar[keyspace_length] = '\0';
+	string resultAsString;
+	resultAsString.assign(resultAsChar, resultAsChar + keyspace_length);
+	return resultAsString;
 }
 
 Document * DocumentIterator::getNextDocument()
 {
 	if (cass_iterator_next(rows)) {
 		const CassRow* row = cass_iterator_get_row(rows);
-		Document * document = (Document *)malloc(sizeof(Document));
+		Document * document = new Document;
 		document->documentNumber = getColumnValue(row, DOCUMENT_NUMBER);
 		document->documentType = getColumnValue(row, DOCUMENT_TYPE);
 		document->countryCode = getColumnValue(row, COUNTRY_CODE);
@@ -37,6 +44,4 @@ DocumentIterator::~DocumentIterator()
 {
 	cass_result_free(result);
 	cass_iterator_free(rows);
-	delete result;
-	delete rows;
 }
