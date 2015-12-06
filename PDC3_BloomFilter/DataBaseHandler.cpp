@@ -10,7 +10,7 @@ Document * DataBaseHandler::getDocumentByNumber(string documentNumber)
 	return nullptr;
 }
 
-bool DataBaseHandler::addDocument(Document document)
+bool DataBaseHandler::addDocument(Document * document)
 {
 	return false;
 }
