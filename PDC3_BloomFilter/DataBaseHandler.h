@@ -10,7 +10,7 @@ private:
 public:
 	DataBaseHandler(DataBaseConfiguration dataBaseConfiguration);
 	Document * getDocumentByNumber(string documentNumber);
-	bool addDocument(Document document);
+	bool addDocument(Document * document);
 	DocumentIterator * getDocumentIterator(string countryCode = "", string documentType = "");
 	~DataBaseHandler();
 };

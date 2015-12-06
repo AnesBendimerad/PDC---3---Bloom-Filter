@@ -69,6 +69,9 @@
     <ClInclude Include="BloomFilter.h">
       <Filter>Header Files\models</Filter>
     </ClInclude>
+    <ClInclude Include="BloomFilterBasedDBController.h">
+      <Filter>Header Files\controllers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -88,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="BloomFilter.cpp">
       <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="BloomFilterBasedDBController.cpp">
+      <Filter>Source Files\controllers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
