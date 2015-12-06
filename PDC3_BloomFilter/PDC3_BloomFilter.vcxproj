@@ -148,12 +148,18 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DataBaseConfiguration.h" />
+    <ClInclude Include="DataBaseHandler.h" />
+    <ClInclude Include="Document.h" />
+    <ClInclude Include="DocumentIterator.h" />
     <ClInclude Include="HashIterator.h" />
     <ClInclude Include="IHasher.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DataBaseHandler.cpp" />
+    <ClCompile Include="DocumentIterator.cpp" />
     <ClCompile Include="PDC3_BloomFilter.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
