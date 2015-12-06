@@ -31,9 +31,6 @@
     <Filter Include="Source Files\controllers">
       <UniqueIdentifier>{60d92a09-800d-4d34-94e9-79a9ad99bf54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\interfaces">
-      <UniqueIdentifier>{954f3b04-2fb6-4b5c-a476-acc2f96de502}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\models">
       <UniqueIdentifier>{8f01987e-764d-4592-8f1b-de168497c7e4}</UniqueIdentifier>
     </Filter>
@@ -84,7 +81,7 @@
       <Filter>Source Files\models</Filter>
     </ClCompile>
     <ClCompile Include="HashIterator.cpp">
-      <Filter>Source Files\models</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
