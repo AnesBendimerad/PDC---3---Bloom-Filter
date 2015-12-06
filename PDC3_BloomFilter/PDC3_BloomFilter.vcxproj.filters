@@ -31,9 +31,6 @@
     <Filter Include="Source Files\controllers">
       <UniqueIdentifier>{60d92a09-800d-4d34-94e9-79a9ad99bf54}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\interfaces">
-      <UniqueIdentifier>{954f3b04-2fb6-4b5c-a476-acc2f96de502}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\models">
       <UniqueIdentifier>{8f01987e-764d-4592-8f1b-de168497c7e4}</UniqueIdentifier>
     </Filter>
@@ -57,6 +54,21 @@
     <ClInclude Include="HashIterator.h">
       <Filter>Header Files\models</Filter>
     </ClInclude>
+    <ClInclude Include="Document.h">
+      <Filter>Header Files\structures</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBaseConfiguration.h">
+      <Filter>Header Files\structures</Filter>
+    </ClInclude>
+    <ClInclude Include="DataBaseHandler.h">
+      <Filter>Header Files\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="DocumentIterator.h">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
+    <ClInclude Include="BloomFilter.h">
+      <Filter>Header Files\models</Filter>
+    </ClInclude>
     <ClInclude Include="MurmurHasher.h">
       <Filter>Header Files\models</Filter>
     </ClInclude>
@@ -68,7 +80,16 @@
     <ClCompile Include="PDC3_BloomFilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DataBaseHandler.cpp">
+      <Filter>Source Files\controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="DocumentIterator.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
     <ClCompile Include="HashIterator.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="BloomFilter.cpp">
       <Filter>Source Files\models</Filter>
     </ClCompile>
     <ClCompile Include="MurmurHasher.cpp">
