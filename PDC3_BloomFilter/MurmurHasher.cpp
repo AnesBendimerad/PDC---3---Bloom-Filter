@@ -11,7 +11,7 @@ MurmurHasher::MurmurHasher()
 HashIterator* MurmurHasher::getHashIterator(string key)
 {
 	uint32_t hashValue_1 = murmur3_32(key, 0);
-	uint32_t hashValue_2 = murmur3_32(key, 1);
+	uint32_t hashValue_2 = murmur3_32(key, hashValue_1);
 	return new HashIterator(hashValue_1, hashValue_2);
 }
 
