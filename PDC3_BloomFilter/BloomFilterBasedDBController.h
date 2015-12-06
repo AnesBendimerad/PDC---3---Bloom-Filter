@@ -10,7 +10,6 @@ private:
 	DataBaseHandler* dbHandler;
 	BloomFilter * bloomFilter;
 public:
-	
 	bool addDocument(Document * document);
 	bool doesDocumentNumberExist(string documentNumber, unsigned int verificationType = BLOOM_AND_DB_VERIFICATION);
 	~BloomFilterBasedDBController();
