@@ -6,7 +6,9 @@
 #include <cassandra.h>
 #include <conio.h>
 #include <stdio.h>
-#include "BitWiseArray.h"
+#include "BloomFilter.h"
+#include "IHasher.h"
+#include "MurmurHasher.h"
 
 using namespace std;
 
@@ -62,7 +64,7 @@ int main() {
 		fprintf(stderr, "Unable to run query: '%.*s'\n",
 			(int)message_length, message);
 	}
-
+	
 	cass_statement_free(statement);
 	cass_future_free(connect_future);
 	cass_session_free(session);
