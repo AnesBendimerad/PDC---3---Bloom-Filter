@@ -65,5 +65,8 @@
     <ClCompile Include="PDC3_BloomFilter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="HashIterator.cpp">
+      <Filter>Source Files\models</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
