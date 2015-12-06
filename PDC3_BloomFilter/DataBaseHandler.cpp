@@ -1,14 +1,7 @@
 #include "stdafx.h"
 #include "DataBaseHandler.h"
 
-string DataBaseHandler::getColumnValue(const CassRow * row, string columnName)
-{
-	const CassValue* value = cass_row_get_column_by_name(row, columnName.c_str());
-	const char* keyspace;
-	size_t keyspace_length;
-	cass_value_get_string(value, &keyspace, &keyspace_length);
-	return string(keyspace);
-}
+
 
 const CassResult * DataBaseHandler::getResultOfQuery(string query)
 {
@@ -53,20 +46,8 @@ Document * DataBaseHandler::getDocumentByNumber(string documentNumber)
 		+ DOCUMENT_NUMBER + " = '" + documentNumber + "'";
 	const CassResult* result = getResultOfQuery(query);
 	if (result!=nullptr){
-		CassIterator* rows = cass_iterator_from_result(result);
-		if (cass_iterator_next(rows)) {
-			const CassRow* row = cass_iterator_get_row(rows);
-			Document * document = (Document *)malloc(sizeof(Document));
-			document->documentNumber = getColumnValue(row,DOCUMENT_NUMBER);
-			document->documentType = getColumnValue(row, DOCUMENT_TYPE);
-			document->countryCode = getColumnValue(row, COUNTRY_CODE);
-			cass_result_free(result);
-			cass_iterator_free(rows);
-			return document;
-		}
-		else {
-			return nullptr;
-		}
+		DocumentIterator * documentIterator=new DocumentIterator(result);
+		return documentIterator->getNextDocument();
 	}
 	else {
 		return nullptr;
@@ -128,4 +109,6 @@ DataBaseHandler::~DataBaseHandler()
 	cass_session_free(session);
 	cass_cluster_free(cluster);
 	delete session;
+	delete connect_future;
+	delete cluster;
 }

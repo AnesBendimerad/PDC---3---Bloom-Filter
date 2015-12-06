@@ -3,8 +3,9 @@
 #include "Document.h"
 class DocumentIterator {
 private:
-	CassResult* result;
+	const CassResult* result;
 	CassIterator* rows;
+	string getColumnValue(const CassRow* row, string columnName);
 public:
 	DocumentIterator(const CassResult* result);
 	Document * getNextDocument();
