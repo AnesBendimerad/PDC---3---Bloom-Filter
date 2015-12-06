@@ -1,12 +1,13 @@
 #pragma once
+#include <stdint.h>
 
 class HashIterator {
 public:
-	HashIterator(unsigned int hashValue_1, unsigned int hashValue_2);
-	unsigned int getNextHash();
+	HashIterator(uint32_t hashValue_1, uint32_t hashValue_2);
+	uint32_t getNextHash();
 private:
-	unsigned int hashValue_1;
-	unsigned int hashValue_2;
-	unsigned int i = 0;
+	uint32_t hashValue_1;
+	uint32_t hashValue_2;
+	uint32_t i = 0;
 
 };

@@ -5,6 +5,6 @@ using namespace std;
 
 class IHasher {
 public:
-	virtual HashIterator getHashIterator(string key) = 0;
+	virtual HashIterator* getHashIterator(string key) = 0;
 
 };
