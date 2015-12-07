@@ -28,7 +28,7 @@ int main() {
 	uint32_t bloomHashNumber = 5;
 	IHasher* hasher = new MurmurHasher();
 
-	BloomFilterBasedDBController* bloomFilterController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber);
+	BloomFilterBasedDBController* bloomFilterController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber, hasher);
 	bloomFilterController->initBloomFilter();
 
 	string testKey = "502";
