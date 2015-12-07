@@ -3,26 +3,27 @@
 #include <iostream>
 #include <string>
 
-#define BUF_SIZE 1024
-#define STOP_QUERY "stop"
-
 using namespace std;
+
+#define STOP_QUERY "stop"
+#define DEFAULT_PORT MAXUINT16
+#define BUF_SIZE 1024
 
 class Server
 {
 public:
-	Server(unsigned int port);
+	Server();
 	~Server();
 	void start();
 	void stop();
 private:
-	unsigned int port;
 	SOCKET sock;
-	int init_connection(void);
+	int Server::init_connection();
 	int read_client(SOCKET sock, char *buffer);
 	void write_client(SOCKET sock, const char *buffer);
 protected:
+	unsigned int port = DEFAULT_PORT;
 	virtual void init() = 0;
-	virtual void executeRequest(string query) = 0;
+	virtual string executeRequest(string query) = 0;
 	virtual void destroy() = 0;
 };

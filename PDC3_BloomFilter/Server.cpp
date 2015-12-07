@@ -2,33 +2,25 @@
 #include "Server.h"
 
 
-Server::Server(unsigned int port)
-{
-	this->port = port;
-	this->sock = init_connection();
-	if (sock == INVALID_SOCKET)
-	{
-		perror("socket()");
-		exit(errno);
-	}
+Server::Server()
+{	
 }
 
 
 Server::~Server()
 {
+
 }
 
-int Server::init_connection(void)
+int Server::init_connection()
 {
 	WSADATA wsa;
 	int err = WSAStartup(MAKEWORD(2, 2), &wsa);
 	if (err < 0)
 	{
-		cout << "WSAStartup failed !" << endl;
-		return INVALID_SOCKET;
+		perror("WSAStartup failed !");
+		exit(errno);
 	}
-
-
 	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
 	SOCKADDR_IN sin = { 0 };
 
@@ -39,7 +31,7 @@ int Server::init_connection(void)
 	}
 
 	sin.sin_addr.s_addr = htonl(INADDR_ANY);
-	sin.sin_port = htons(port);
+	sin.sin_port = htons(this->port);
 	sin.sin_family = AF_INET;
 
 	if (bind(sock, (SOCKADDR *)&sin, sizeof sin) == SOCKET_ERROR)
@@ -53,7 +45,6 @@ int Server::init_connection(void)
 		perror("listen()");
 		exit(errno);
 	}
-	cout << "listening to port" << port << endl;
 	return sock;
 }
 
@@ -66,20 +57,25 @@ void Server::stop()
 
 void Server::start()
 {
+	
+	this->sock = this->init_connection(); //initilize the connection using the port
 	char buffer[BUF_SIZE];
 	SOCKET csock;
 	SOCKADDR_IN csin = { 0 };
 	int sinsize = sizeof csin;
 
-	csock = accept(sock, (SOCKADDR *)&csin, &sinsize);
 	init(); // to implement
 
+	cout << "waiting client ... " << endl;
+	csock = accept(sock, (SOCKADDR *)&csin, &sinsize);
 	if (csock == SOCKET_ERROR)
 	{
 		perror("accept()");
 	}
 
+	cout << "listening to port " << port << " ... " << endl;
 	bool end = false;
+	string response = "";
 	while (!end)
 	{
 		if (read_client(csock, buffer) == -1)
@@ -94,28 +90,22 @@ void Server::start()
 			}
 			else
 			{
-				executeRequest(buffer); // to implement
-				write_client(csock, "received");
+				response = executeRequest(buffer); // to implement
+				write_client(csock, response.c_str());
 			}
 		}
 	}
-
-
-
 }
 
 
 int Server::read_client(SOCKET sock, char *buffer)
 {
 	int n = 0;
-
 	if ((n = recv(sock, buffer, BUF_SIZE - 1, 0)) < 0)
 	{
 		n = 0;
 	}
-
 	buffer[n] = 0;
-
 	return n;
 }
 
