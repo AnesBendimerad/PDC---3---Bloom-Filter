@@ -5,25 +5,25 @@
 
 BloomFilterBasedDBController::BloomFilterBasedDBController(DataBaseConfiguration dataBaseConfiguration, uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
 {
-	BloomFilterBasedDBController::dbHandler = new DataBaseHandler(dataBaseConfiguration);
+	this->dbHandler = new DataBaseHandler(dataBaseConfiguration);
 	if (bloomFilterHashFunction == nullptr) bloomFilterHashFunction = new MurmurHasher();
-	BloomFilterBasedDBController::bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
+	this->bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
 }
 
-void BloomFilterBasedDBController::construct()
+void BloomFilterBasedDBController::initBloomFilter()
 {
-	DocumentIterator* allDocumentIterator = BloomFilterBasedDBController::dbHandler->getDocumentIterator();
+	DocumentIterator* allDocumentIterator = this->dbHandler->getDocumentIterator();
 	while (Document* d = allDocumentIterator->getNextDocument())
 	{
-		BloomFilterBasedDBController::bloomFilter->addKey(d->documentNumber);
+		this->bloomFilter->addKey(d->documentNumber);
 	}
 }
 
 bool BloomFilterBasedDBController::addDocument(Document * document)
 {
-	if (dbHandler->addDocument(document))
+	if (this->dbHandler->addDocument(document))
 	{
-		bloomFilter->addKey(document->documentNumber);
+		this->bloomFilter->addKey(document->documentNumber);
 		return true;
 	}
 	return false;
@@ -35,19 +35,19 @@ bool BloomFilterBasedDBController::doesDocumentNumberExist(string documentNumber
 	switch (verificationType)
 	{
 		case BLOOM_VERIFICATION :
-			return bloomFilter->readKey(documentNumber);
+			return this->bloomFilter->readKey(documentNumber);
 			break;
 		case DB_VERIFICATION :
-			return dbHandler->getDocumentByNumber(documentNumber)!= nullptr;
+			return this->dbHandler->getDocumentByNumber(documentNumber)!= nullptr;
 			break;
 		default :
-			if (!bloomFilter->readKey(documentNumber))
+			if (!this->bloomFilter->readKey(documentNumber))
 			{
 				return false;
 			}
 			else
 			{
-				return dbHandler->getDocumentByNumber(documentNumber) != nullptr;
+				return this->dbHandler->getDocumentByNumber(documentNumber) != nullptr;
 			}
 			break;
 	}	
@@ -55,6 +55,6 @@ bool BloomFilterBasedDBController::doesDocumentNumberExist(string documentNumber
 
 BloomFilterBasedDBController::~BloomFilterBasedDBController()
 {
-	delete BloomFilterBasedDBController::dbHandler;
-	delete BloomFilterBasedDBController::bloomFilter;
+	delete this->dbHandler;
+	delete this->bloomFilter;
 }

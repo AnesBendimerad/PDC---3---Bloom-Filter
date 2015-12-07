@@ -29,7 +29,7 @@ int main() {
 	IHasher* hasher = new MurmurHasher();
 
 	BloomFilterBasedDBController* bloomFilterController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber);
-	bloomFilterController->construct();
+	bloomFilterController->initBloomFilter();
 
 	string testKey = "502";
 
