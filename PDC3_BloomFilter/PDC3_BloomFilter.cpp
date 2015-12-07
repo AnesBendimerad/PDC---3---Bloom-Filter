@@ -31,9 +31,9 @@ int main() {
 	BloomFilterBasedDBController* bloomFilterController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber);
 	bloomFilterController->construct();
 
-	string testKey = "5011";
+	string testKey = "502";
 
-	if (bloomFilterController->doesDocumentNumberExist(testKey))
+	if (bloomFilterController->doesDocumentNumberExist(testKey,BLOOM_AND_DB_VERIFICATION))
 	{
 		cout << testKey << " exists in the set " << endl;
 	}
