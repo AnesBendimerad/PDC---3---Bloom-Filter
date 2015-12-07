@@ -14,18 +14,12 @@ DataBaseGenerator::DataBaseGenerator(DataBaseConfiguration dataBaseConfiguration
 
 bool DataBaseGenerator::generate()
 {
-	string dropKeyspace="drop keyspace if exists " + DataBaseGenerator::dataBaseConfiguration.keySpace + ";";
-	string createKeyspace = "create keyspace " + DataBaseGenerator::dataBaseConfiguration.keySpace + " with replication={'class':'SimpleStrategy', 'replication_factor':1};";
-	
-	string createTable = "create table " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + " ( " + string(DOCUMENT_NUMBER) + " varchar primary key, " + string(DOCUMENT_TYPE) + " varchar, " + string(COUNTRY_CODE) + " varchar); ";
-	
-	string dropIndex = "drop index if exists " + string(COUNTRY_CODE) + "_index;";
-	string creatIndex = " create index " + string(COUNTRY_CODE) + "_index on " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + "(" + string(COUNTRY_CODE) + "); ";
+	string createKeyspace = "create keyspace if not exists " + DataBaseGenerator::dataBaseConfiguration.keySpace + " with replication={'class':'SimpleStrategy', 'replication_factor':1};";
+	string createTable = "create table if not exists " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + " ( " + string(DOCUMENT_NUMBER) + " varchar primary key, " + string(DOCUMENT_TYPE) + " varchar, " + string(COUNTRY_CODE) + " varchar); ";
+	string creatIndex = " create index if not exists " + string(COUNTRY_CODE) + "_index on " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + "(" + string(COUNTRY_CODE) + "); ";
 
-	executeQuery(dropKeyspace);
 	executeQuery(createKeyspace);
 	executeQuery(createTable);
-	executeQuery(dropIndex);
 	executeQuery(creatIndex);
 
 	DataBaseHandler * dbh = new DataBaseHandler(DataBaseGenerator::dataBaseConfiguration);
