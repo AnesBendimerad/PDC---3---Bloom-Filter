@@ -10,6 +10,15 @@ BloomFilterBasedDBController::BloomFilterBasedDBController(DataBaseConfiguration
 	BloomFilterBasedDBController::bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
 }
 
+void BloomFilterBasedDBController::construct()
+{
+	DocumentIterator* allDocumentIterator = BloomFilterBasedDBController::dbHandler->getDocumentIterator();
+	while (Document* d = allDocumentIterator->getNextDocument())
+	{
+		BloomFilterBasedDBController::bloomFilter->addKey(d->documentNumber);
+	}
+}
+
 bool BloomFilterBasedDBController::addDocument(Document * document)
 {
 	if (dbHandler->addDocument(document))

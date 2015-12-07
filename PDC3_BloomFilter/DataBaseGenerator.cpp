@@ -12,6 +12,8 @@ DataBaseGenerator::DataBaseGenerator(DataBaseConfiguration dataBaseConfiguration
 	DataBaseGenerator::dataBaseSize = dataBaseSize;
 }
 
+
+
 bool DataBaseGenerator::generate()
 {
 	string createKeyspace = "create keyspace if not exists " + DataBaseGenerator::dataBaseConfiguration.keySpace + " with replication={'class':'SimpleStrategy', 'replication_factor':1};";
