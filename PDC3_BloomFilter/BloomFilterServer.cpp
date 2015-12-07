@@ -67,6 +67,7 @@ void BloomFilterServer::init()
 string BloomFilterServer::executeRequest(string query)
 {
 	cout << "Searching "<< query << " ... " << endl;
+	/*
 	if (bloomFilterBasedDBController->doesDocumentNumberExist(query, BLOOM_AND_DB_VERIFICATION))
 	{
 		cout << "Answer sent !" << endl;
@@ -76,6 +77,19 @@ string BloomFilterServer::executeRequest(string query)
 	{
 		cout << "Answer sent !" << endl;
 		return query + " doesn't exists in the set ";
+	}
+	*/
+
+	Document *document = bloomFilterBasedDBController->getDocument(query);
+	if (document==nullptr)
+	{
+		cout << "Answer sent !" << endl;
+		return query + " doesn't exists in the set ";
+	}
+	else
+	{
+		cout << "Answer sent !" << endl;
+		return "document "+query + " details : "+document->documentNumber+" | "+ document->documentType+ " | " + document->countryCode;
 	}
 }
 

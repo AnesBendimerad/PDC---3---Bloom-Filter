@@ -53,6 +53,18 @@ bool BloomFilterBasedDBController::doesDocumentNumberExist(string documentNumber
 	}	
 }
 
+Document * BloomFilterBasedDBController::getDocument(string documentNumber)
+{
+	if (!this->bloomFilter->readKey(documentNumber))
+	{
+		return false;
+	}
+	else
+	{
+		return this->dbHandler->getDocumentByNumber(documentNumber);
+	}
+}
+
 BloomFilterBasedDBController::~BloomFilterBasedDBController()
 {
 	delete this->dbHandler;
