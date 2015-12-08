@@ -2,26 +2,22 @@
 //
 
 #include "stdafx.h"
-#include <iostream>
-#include <sstream>
 #include <string>
-#include <cassandra.h>
-#include <conio.h>
 #include <stdio.h>
-#include "BloomFilter.h"
-#include "IHasher.h"
-#include "MurmurHasher.h"
-#include "DataBaseGenerator.h"
-#include "BloomFilterBasedDBController.h"
 #include "BloomFilterServer.h"
-#include <vector>
-#include <algorithm>
-#include <iterator>
+
 using namespace std;
 
-int main() {
-	BloomFilterServer bloomFilterServer("configFile.txt");
-	bloomFilterServer.start();
-	system("pause");
+int main(int argc, char** argv) {
+	//command : prog configFileName
+	if (argc == 2)
+	{
+		string configFilePath = argv[1];
+		BloomFilterServer bloomFilterServer(configFilePath);
+		bloomFilterServer.start();
+	}
+	else {
+		cout << "error : you must specify a configuration file" << endl;
+	}
 	return 0;
 }

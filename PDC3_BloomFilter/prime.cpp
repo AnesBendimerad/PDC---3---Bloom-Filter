@@ -5,7 +5,7 @@
 
 bool isPrime(uint32_t number)
 {
-	uint32_t root = sqrt(number);
+	double root = sqrt(number);
 	for (unsigned int i = 2;i <= root;i++)
 	{
 		if (number%i == 0)

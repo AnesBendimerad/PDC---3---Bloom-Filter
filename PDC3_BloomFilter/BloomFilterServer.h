@@ -35,6 +35,8 @@ private :
 	virtual string executeRequest(string query);
 	virtual void destroy();
 
+	void initFromConfigFile(string configFilePath);
+
 	vector<string> getCommandArgument(string query); // return empty vector if the command is not correct
 	BloomFilterBasedDBController* bloomFilterBasedDBController;
 	

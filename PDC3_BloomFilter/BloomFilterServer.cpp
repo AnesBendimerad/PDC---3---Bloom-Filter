@@ -6,50 +6,7 @@ using namespace std;
 
 BloomFilterServer::BloomFilterServer(string configFilePath) : Server()
 {
-	
-	string element;
-	ifstream configFile(configFilePath.c_str());
-	unsigned int port;
-
-	DataBaseConfiguration config;
-	config.contactPoints = DEFAULT_DB_CONTACTPOINTS;
-	config.keySpace = DEFAULT_DB_KEYSPACE;
-	config.table = DEFAULT_DB_TABLE;
-	uint32_t bloomSizeInBit = DEFAULT_BF_SIZE;
-	uint32_t bloomHashNumber = DEFAULT_BF_HASHNUMBER;
-
-	if (configFile.is_open())
-	{
-		while (configFile >> element)
-		{
-			if (element.compare(CONFIG_SERVER_PORT) == 0)
-			{
-				configFile >> this->port;
-			}
-			else if (element.compare(CONFIG_DB_CONTACTPOINTS) == 0)
-			{
-				configFile >> config.contactPoints;
-			}
-			else if (element.compare(CONFIG_DB_KEYSPACE) == 0)
-			{
-				configFile >> config.keySpace;
-			}
-			else if (element.compare(CONFIG_DB_TABLE) == 0)
-			{
-				configFile >> config.table;
-			}
-			else if (element.compare(CONFIG_BF_SIZE) == 0)
-			{
-				configFile >> bloomSizeInBit;
-			}
-			else if (element.compare(CONFIG_BF_HASHNUMBER) == 0)
-			{
-				configFile >> bloomHashNumber;
-			}
-		}
-	}
-
-	this->bloomFilterBasedDBController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber, nullptr);
+	this->initFromConfigFile(configFilePath);
 }
 
 
@@ -120,6 +77,51 @@ string BloomFilterServer::executeRequest(string query)
 void BloomFilterServer::destroy()
 {
 	delete bloomFilterBasedDBController;
+}
+
+void BloomFilterServer::initFromConfigFile(string configFilePath)
+{
+	string element;
+	ifstream configFile(configFilePath.c_str());
+	DataBaseConfiguration config;
+	config.contactPoints = DEFAULT_DB_CONTACTPOINTS;
+	config.keySpace = DEFAULT_DB_KEYSPACE;
+	config.table = DEFAULT_DB_TABLE;
+	uint32_t bloomSizeInBit = DEFAULT_BF_SIZE;
+	uint32_t bloomHashNumber = DEFAULT_BF_HASHNUMBER;
+
+	if (configFile.is_open())
+	{
+		while (configFile >> element)
+		{
+			if (element.compare(CONFIG_SERVER_PORT) == 0)
+			{
+				configFile >> this->port;
+			}
+			else if (element.compare(CONFIG_DB_CONTACTPOINTS) == 0)
+			{
+				configFile >> config.contactPoints;
+			}
+			else if (element.compare(CONFIG_DB_KEYSPACE) == 0)
+			{
+				configFile >> config.keySpace;
+			}
+			else if (element.compare(CONFIG_DB_TABLE) == 0)
+			{
+				configFile >> config.table;
+			}
+			else if (element.compare(CONFIG_BF_SIZE) == 0)
+			{
+				configFile >> bloomSizeInBit;
+			}
+			else if (element.compare(CONFIG_BF_HASHNUMBER) == 0)
+			{
+				configFile >> bloomHashNumber;
+			}
+		}
+	}
+
+	this->bloomFilterBasedDBController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber, nullptr);
 }
 
 vector<string> BloomFilterServer::getCommandArgument(string query)
