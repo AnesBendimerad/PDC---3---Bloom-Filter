@@ -22,6 +22,7 @@
 
 #define EXISTS_COMMAND				"exists" // exists <document_number> [<option_of_search>]
 #define GET_COMMAND					"get"	 // get    <document_number>
+#define REINIT_COMMAND				"reinit" // reinit <config_file_path>
 
 #define RESPONSE_END_TAG			"<END/>"
 class BloomFilterServer :
@@ -32,10 +33,11 @@ public:
 	~BloomFilterServer();
 private : 
 	virtual void init();
+	void reinit(string configFilePath);
 	virtual string executeRequest(string query);
 	virtual void destroy();
 
-	void initFromConfigFile(string configFilePath);
+	void prepareFromConfigFile(string configFilePath);
 
 	vector<string> getCommandArgument(string query); // return empty vector if the command is not correct
 	BloomFilterBasedDBController* bloomFilterBasedDBController;
