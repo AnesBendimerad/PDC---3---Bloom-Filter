@@ -2,6 +2,7 @@
 #include "BloomFilterServer.h"
 #include <iostream>
 #include <fstream>
+#include <chrono>
 using namespace std;
 
 BloomFilterServer::BloomFilterServer(string configFilePath) : Server()
@@ -70,7 +71,10 @@ void BloomFilterServer::reinit(string configFilePath)
 
 string BloomFilterServer::executeRequest(string query)
 {
+	chrono::high_resolution_clock::time_point t1 = chrono::high_resolution_clock::now();
+
 	string response = "";
+	
 	cout << "exectuting "<< query << " ... " << endl;
 	
 	vector<string> tokens = this->getCommandArgument(query);
@@ -121,9 +125,16 @@ string BloomFilterServer::executeRequest(string query)
 		}
 	}
 	
-	cout << "Answer sent : " << response << endl;
+	chrono::high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now();
+	unsigned long long duration = (t2 - t1).count()/1000;
+	string informations = "time : "+to_string(duration)+" ms";
+
+	string answer = "OK (" + response + ")" + "(" + informations + ")"+ RESPONSE_END_TAG;
+	
+	cout << "Answer sent : " << answer << endl;
 	cout << "--------------------------------" << endl;
-	return response+RESPONSE_END_TAG;
+
+	return answer;
 }
 
 vector<string> BloomFilterServer::getCommandArgument(string query)
