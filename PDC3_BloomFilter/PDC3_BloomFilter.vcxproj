@@ -170,6 +170,7 @@
     <ClCompile Include="BloomFilterBasedDBController.cpp" />
     <ClCompile Include="DataBaseGenerator.cpp" />
     <ClCompile Include="DataBaseHandler.cpp" />
+    <ClCompile Include="Document.cpp" />
     <ClCompile Include="DocumentIterator.cpp" />
     <ClCompile Include="PDC3_BloomFilter.cpp" />
     <ClCompile Include="HashIterator.cpp" />

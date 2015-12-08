@@ -37,6 +37,9 @@
     <Filter Include="Source Files\utils">
       <UniqueIdentifier>{ab7d15d7-6089-4938-b7a4-9f51ba08b032}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\structures">
+      <UniqueIdentifier>{63b650f4-dec7-46bf-ba62-ee26d5d06946}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -130,6 +133,9 @@
     </ClCompile>
     <ClCompile Include="BloomFilterServer.cpp">
       <Filter>Source Files\controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Document.cpp">
+      <Filter>Source Files\structures</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
