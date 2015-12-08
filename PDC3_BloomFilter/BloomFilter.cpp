@@ -40,4 +40,5 @@ bool BloomFilter::readKey(string key)
 BloomFilter::~BloomFilter()
 {
 	delete BloomFilter::bitWiseArray;
+	delete BloomFilter::hashFunction;
 }

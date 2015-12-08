@@ -10,11 +10,11 @@ class DataBaseGenerator {
 private:
 	DataBaseConfiguration dataBaseConfiguration;
 	unsigned int dataBaseSize;
-	string RandomString(int len);
-	bool executeQuery(string query);
+	string RandomString(unsigned int len);
+	bool createDB();
 
 public:
 	DataBaseGenerator(DataBaseConfiguration dataBaseConfiguration, unsigned int dataBaseSize);
-	bool generate();
+	bool createAndGenerateDB();
 	~DataBaseGenerator();
 };

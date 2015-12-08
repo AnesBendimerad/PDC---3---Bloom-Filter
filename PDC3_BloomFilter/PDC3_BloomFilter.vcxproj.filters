@@ -84,6 +84,12 @@
     <ClInclude Include="prime.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="Server.h">
+      <Filter>Header Files\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="BloomFilterServer.h">
+      <Filter>Header Files\controllers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -118,6 +124,12 @@
     </ClCompile>
     <ClCompile Include="prime.cpp">
       <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp">
+      <Filter>Source Files\controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="BloomFilterServer.cpp">
+      <Filter>Source Files\controllers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

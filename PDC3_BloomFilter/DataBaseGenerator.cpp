@@ -1,51 +1,40 @@
 #include "stdafx.h"
+#include <time.h>
 #include "DataBaseGenerator.h"
 #include "Document.h"
-#include <time.h>
 #include "DataBaseHandler.h"
 
 using namespace std;
 
 DataBaseGenerator::DataBaseGenerator(DataBaseConfiguration dataBaseConfiguration, unsigned int dataBaseSize)
 {
-	this->dataBaseConfiguration = dataBaseConfiguration;
-	this->dataBaseSize = dataBaseSize;
+	DataBaseGenerator::dataBaseConfiguration = dataBaseConfiguration;
+	DataBaseGenerator::dataBaseSize = dataBaseSize;
 }
 
-bool DataBaseGenerator::generate()
+bool DataBaseGenerator::createAndGenerateDB()
 {
-
-	string index = " CREATE INDEX countryCode_index ON bloom_filter.document(" + string(COUNTRY_CODE) + "); ";
-	string table = "create table bloom_filter.document ( " + string(DOCUMENT_NUMBER) + " varchar primary key, " + string(DOCUMENT_TYPE) + " varchar, " + string(COUNTRY_CODE) + " varchar); ";
-	string keyspace = "create keyspace bloom_filter with replication={'class':'SimpleStrategy', 'replication_factor':1};";
-
-	executeQuery(keyspace);
-	executeQuery(table);
-	executeQuery(index);
-
-	DataBaseHandler * dbh = new DataBaseHandler(this->dataBaseConfiguration);
+	this->createDB();
+	DataBaseHandler * dataBaseHandler = new DataBaseHandler(this->dataBaseConfiguration);
 	Document doc;
-	 int i = 0;
+	unsigned int i = 0;
 	while (i < dataBaseSize){
 		 
 		doc.documentNumber = std::to_string(i);
 		doc.countryCode = RandomString(countryCodeSize);
 		doc.documentType = RandomString(documentTypeSize);
-
-		dbh->addDocument(&doc);
+		dataBaseHandler->addDocument(&doc);
 		i++;
 	}
-
-	delete dbh;
+	delete dataBaseHandler;
 	return true;
 }
 
-
-string DataBaseGenerator::RandomString(int len)
+string DataBaseGenerator::RandomString(unsigned int len)
 {
 	srand(time(0));
 	string str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	int pos;
+	unsigned int pos;
 	while (str.size() != len) {
 		pos = ((rand() % (str.size() - 1)));
 		str.erase(pos, 1);
@@ -53,7 +42,7 @@ string DataBaseGenerator::RandomString(int len)
 	return str;
 }
 
-bool DataBaseGenerator::executeQuery(string query){
+bool DataBaseGenerator::createDB(){
 
 	/* Setup and connect to cluster */
 	CassCluster* cluster = cass_cluster_new();
@@ -68,42 +57,59 @@ bool DataBaseGenerator::executeQuery(string query){
 	/* This operation will block until the result is ready */
 	CassError rc = cass_future_error_code(connect_future);
 
-	printf("Connect result: %s\n", cass_error_desc(rc));
+	printf("Database connection result: %s\n", cass_error_desc(rc));
 
-	/* Run queries... */
+	/* Build statement and execute query ... */
 
-	/* Build statement and execute query */
-
-	CassStatement* statement = cass_statement_new(query.c_str(), 0);
-
+	/* Create KeySpace*/
+	string createKeyspace = "create keyspace if not exists " + DataBaseGenerator::dataBaseConfiguration.keySpace + " with replication={'class':'SimpleStrategy', 'replication_factor':1};";
+	CassStatement* statement = cass_statement_new(createKeyspace.c_str(), 0);
 	CassFuture* result_future = cass_session_execute(session, statement);
-
-	if (cass_future_error_code(result_future) == CASS_OK) {
-		/* Retrieve result set and iterate over the rows */
-		const CassResult* result = cass_future_get_result(result_future);
-		CassIterator* rows = cass_iterator_from_result(result);
-
-		cass_result_free(result);
-		cass_iterator_free(rows);
-	}
-	else {
+	if (cass_future_error_code(result_future) != CASS_OK)
+	{
 		/* Handle error */
 		const char* message;
 		size_t message_length;
 		cass_future_error_message(result_future, &message, &message_length);
-		fprintf(stderr, "Unable to run query: '%.*s'\n",
-			(int)message_length, message);
+		fprintf(stderr, "Unable to run query: '%.*s'\n",(int)message_length, message);
 		return false;
 	}
 
+	/* Create Table*/
+	string createTable = "create table if not exists " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + " ( " + string(DOCUMENT_NUMBER) + " varchar primary key, " + string(DOCUMENT_TYPE) + " varchar, " + string(COUNTRY_CODE) + " varchar); ";
+	statement = cass_statement_new(createTable.c_str(), 0);
+	result_future = cass_session_execute(session, statement);
+	if (cass_future_error_code(result_future) != CASS_OK)
+	{
+		/* Handle error */
+		const char* message;
+		size_t message_length;
+		cass_future_error_message(result_future, &message, &message_length);
+		fprintf(stderr, "Unable to run query: '%.*s'\n", (int)message_length, message);
+		return false;
+	}
+
+	/* Create Index*/
+	string creatIndex = "create index if not exists " + string(COUNTRY_CODE) + "_index on " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + "(" + string(COUNTRY_CODE) + "); ";
+	statement = cass_statement_new(creatIndex.c_str(), 0);
+	result_future = cass_session_execute(session, statement);
+	if (cass_future_error_code(result_future) != CASS_OK)
+	{
+		/* Handle error */
+		const char* message;
+		size_t message_length;
+		cass_future_error_message(result_future, &message, &message_length);
+		fprintf(stderr, "Unable to run query: '%.*s'\n", (int)message_length, message);
+		return false;
+	}
+
+	/* Free database */
 	cass_statement_free(statement);
 	cass_future_free(connect_future);
 	cass_session_free(session);
 	cass_cluster_free(cluster);
-
 	return true;
 }
-
 
 DataBaseGenerator::~DataBaseGenerator()
 {

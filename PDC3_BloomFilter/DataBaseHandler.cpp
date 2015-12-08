@@ -36,7 +36,7 @@ DataBaseHandler::DataBaseHandler(DataBaseConfiguration dataBaseConfiguration)
 	connect_future = cass_session_connect(session, cluster);
 	/* This operation will block until the result is ready */
 	CassError rc = cass_future_error_code(connect_future);
-	printf("Connect result: %s\n", cass_error_desc(rc));
+	printf("Database connection result: %s\n", cass_error_desc(rc));
 }
 
 Document * DataBaseHandler::getDocumentByNumber(string documentNumber)

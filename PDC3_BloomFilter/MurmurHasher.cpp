@@ -15,6 +15,10 @@ HashIterator* MurmurHasher::getHashIterator(string key)
 	return new HashIterator(hashValue_1, hashValue_2);
 }
 
+MurmurHasher::~MurmurHasher()
+{
+}
+
 uint32_t MurmurHasher::murmur3_32(string key, uint32_t seed)
 {
 	const char* keyAsChars= key.c_str();
