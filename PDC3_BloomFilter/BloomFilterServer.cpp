@@ -91,7 +91,12 @@ string BloomFilterServer::executeRequest(string query)
 		}
 		else if (strcmp(tokens[0].c_str(), EXISTS_COMMAND)==0)
 		{
-			unsigned int option = atoi(tokens[2].c_str());
+			unsigned int option = BLOOM_AND_DB_VERIFICATION;
+			if (tokens.size() == 3)
+			{
+				option = atoi(tokens[2].c_str());
+			}
+
 			if (bloomFilterBasedDBController->doesDocumentNumberExist(tokens[1], option))
 			{
 				response = "document " + tokens[1] + " exists in the set ";
@@ -136,7 +141,7 @@ vector<string> BloomFilterServer::getCommandArgument(string query)
 		{
 			return tokens;
 		}
-		else if (strcmp(tokens[0].c_str(), EXISTS_COMMAND)==0 && tokens.size() == 3)
+		else if (strcmp(tokens[0].c_str(), EXISTS_COMMAND)==0 && tokens.size() >= 2 && tokens.size() <= 3)
 		{
 			return tokens;
 		}
