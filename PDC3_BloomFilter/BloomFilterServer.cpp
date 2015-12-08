@@ -66,34 +66,80 @@ void BloomFilterServer::init()
 
 string BloomFilterServer::executeRequest(string query)
 {
-	cout << "Searching "<< query << " ... " << endl;
-	/*
-	if (bloomFilterBasedDBController->doesDocumentNumberExist(query, BLOOM_AND_DB_VERIFICATION))
+	string response = "";
+	cout << "exectuting "<< query << " ... " << endl;
+	
+	vector<string> tokens = this->getCommandArgument(query);
+	
+	if (tokens.size() == 0)
 	{
-		cout << "Answer sent !" << endl;
-		return query+" exists in the set ";
+		response = "Incorrect query !";
 	}
 	else
 	{
-		cout << "Answer sent !" << endl;
-		return query + " doesn't exists in the set ";
+		if (strcmp(tokens[0].c_str(),GET_COMMAND)==0)
+		{
+			Document *document = bloomFilterBasedDBController->getDocument(tokens[1]);
+			if (document == nullptr)
+			{
+				response = "document "+ tokens[1] + " doesn't exists in the set ";
+			}
+			else
+			{
+				response = "document " + tokens[1] + " details : " + document->documentNumber + " | " + document->documentType + " | " + document->countryCode;
+			}
+		}
+		else if (strcmp(tokens[0].c_str(), EXISTS_COMMAND)==0)
+		{
+			unsigned int option = atoi(tokens[2].c_str());
+			if (bloomFilterBasedDBController->doesDocumentNumberExist(tokens[1], option))
+			{
+				response = "document " + tokens[1] + " exists in the set ";
+				if (option == BLOOM_VERIFICATION)
+				{
+					response += "( with a risk of FALSE POSITIVE )";
+				}
+			}
+			else
+			{
+				response = "document " + tokens[1] + " doesn't exists in the set ";
+			}
+		}
 	}
-	*/
-
-	Document *document = bloomFilterBasedDBController->getDocument(query);
-	if (document==nullptr)
-	{
-		cout << "Answer sent !" << endl;
-		return query + " doesn't exists in the set ";
-	}
-	else
-	{
-		cout << "Answer sent !" << endl;
-		return "document "+query + " details : "+document->documentNumber+" | "+ document->documentType+ " | " + document->countryCode;
-	}
+	
+	cout << "Answer sent : " << response << endl;
+	cout << "--------------------------------" << endl;
+	return response;
 }
 
 void BloomFilterServer::destroy()
 {
 	delete bloomFilterBasedDBController;
+	cout << "Stopping service ..." << endl;
+	cout << "--------------------------------" << endl;
+}
+
+vector<string> BloomFilterServer::getCommandArgument(string query)
+{
+	istringstream iss(query);
+	vector<string> tokens{ istream_iterator<string>{iss},istream_iterator<string>{} };
+
+	
+
+	if (tokens.size() > 0)
+	{
+		if (strcmp(tokens[0].c_str(), STOP_COMMAND)==0 && tokens.size() == 1)
+		{
+			return tokens;
+		}
+		else if (strcmp(tokens[0].c_str(), GET_COMMAND)==0 && tokens.size() == 2)
+		{
+			return tokens;
+		}
+		else if (strcmp(tokens[0].c_str(), EXISTS_COMMAND)==0 && tokens.size() == 3)
+		{
+			return tokens;
+		}
+	}
+	return vector<string>();
 }

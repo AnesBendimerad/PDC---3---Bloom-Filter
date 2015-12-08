@@ -5,7 +5,7 @@
 
 using namespace std;
 
-#define STOP_QUERY "stop"
+#define STOP_COMMAND "stop"
 #define DEFAULT_PORT MAXUINT16
 #define BUF_SIZE 1024
 

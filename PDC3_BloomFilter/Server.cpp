@@ -84,7 +84,7 @@ void Server::start()
 		}
 		else
 		{
-			if (strcmp(buffer, STOP_QUERY) == 0)
+			if (strcmp(buffer, STOP_COMMAND) == 0)
 			{
 				end = true;
 			}
@@ -95,6 +95,7 @@ void Server::start()
 			}
 		}
 	}
+	this->stop();
 }
 
 
