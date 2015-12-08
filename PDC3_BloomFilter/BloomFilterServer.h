@@ -23,6 +23,7 @@
 #define EXISTS_COMMAND				"exists" // exists <document_number> [<option_of_search>]
 #define GET_COMMAND					"get"	 // get    <document_number>
 
+#define RESPONSE_END_TAG			"<END/>"
 class BloomFilterServer :
 	public Server
 {

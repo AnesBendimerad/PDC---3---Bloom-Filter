@@ -82,11 +82,11 @@ string BloomFilterServer::executeRequest(string query)
 			Document *document = bloomFilterBasedDBController->getDocument(tokens[1]);
 			if (document == nullptr)
 			{
-				response = "document "+ tokens[1] + " doesn't exists in the set ";
+				response = "document doesn't exists in the set ";
 			}
 			else
 			{
-				response = "document " + tokens[1] + " details : " + document->documentNumber + " | " + document->documentType + " | " + document->countryCode;
+				response = "document details : " + document->documentNumber + " | " + document->documentType + " | " + document->countryCode;
 			}
 		}
 		else if (strcmp(tokens[0].c_str(), EXISTS_COMMAND)==0)
@@ -99,7 +99,7 @@ string BloomFilterServer::executeRequest(string query)
 
 			if (bloomFilterBasedDBController->doesDocumentNumberExist(tokens[1], option))
 			{
-				response = "document " + tokens[1] + " exists in the set ";
+				response = "document exists in the set ";
 				if (option == BLOOM_VERIFICATION)
 				{
 					response += "( with a risk of FALSE POSITIVE )";
@@ -107,14 +107,14 @@ string BloomFilterServer::executeRequest(string query)
 			}
 			else
 			{
-				response = "document " + tokens[1] + " doesn't exists in the set ";
+				response = "document doesn't exists in the set ";
 			}
 		}
 	}
 	
 	cout << "Answer sent : " << response << endl;
 	cout << "--------------------------------" << endl;
-	return response;
+	return response+RESPONSE_END_TAG;
 }
 
 void BloomFilterServer::destroy()
