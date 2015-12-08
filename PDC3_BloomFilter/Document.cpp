@@ -1,6 +1,9 @@
 #include "stdafx.h"
 #include "Document.h"
 string documentToString(Document *document) {
+	if (document == nullptr) {
+		return "";
+	}
 	return document->documentNumber + " " + document->documentType + " " + document->countryCode;
 
 }
