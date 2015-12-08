@@ -120,8 +120,6 @@ string BloomFilterServer::executeRequest(string query)
 void BloomFilterServer::destroy()
 {
 	delete bloomFilterBasedDBController;
-	cout << "Stopping service ..." << endl;
-	cout << "--------------------------------" << endl;
 }
 
 vector<string> BloomFilterServer::getCommandArgument(string query)

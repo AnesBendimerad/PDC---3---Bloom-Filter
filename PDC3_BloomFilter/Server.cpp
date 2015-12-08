@@ -66,36 +66,41 @@ void Server::start()
 
 	init(); // to implement
 
-	cout << "waiting client ... " << endl;
-	csock = accept(sock, (SOCKADDR *)&csin, &sinsize);
-	if (csock == SOCKET_ERROR)
-	{
-		perror("accept()");
-	}
-
+	//cout << "waiting client ... " << endl;
+	
 	cout << "listening to port " << port << " ... " << endl;
 	bool end = false;
 	string response = "";
 	while (!end)
 	{
-		if (read_client(csock, buffer) == -1)
+		csock = accept(sock, (SOCKADDR *)&csin, &sinsize);
+		if (csock == SOCKET_ERROR)
 		{
-			continue;
+			perror("Acceptation phase failed");
 		}
-		else
-		{
-			if (strcmp(buffer, STOP_COMMAND) == 0)
+		else {
+			if (read_client(csock, buffer) == -1)
 			{
-				end = true;
+				continue;
 			}
 			else
 			{
-				response = executeRequest(buffer); // to implement
-				write_client(csock, response.c_str());
+				if (strcmp(buffer, STOP_COMMAND) == 0)
+				{
+					end = true;
+				}
+				else
+				{
+					response = executeRequest(buffer); // to implement
+					write_client(csock, response.c_str());
+				}
 			}
 		}
 	}
+	cout << "Stopping service ..." << endl;
 	this->stop();
+	cout << "Service stoped" << endl;
+	cout << "--------------------------------" << endl;
 }
 
 
@@ -112,8 +117,5 @@ int Server::read_client(SOCKET sock, char *buffer)
 
 void Server::write_client(SOCKET sock, const char *buffer)
 {
-	if (send(sock, buffer, strlen(buffer), 0) < 0)
-	{
-		exit(errno);
-	}
+	send(sock, buffer, strlen(buffer), 0);
 }
