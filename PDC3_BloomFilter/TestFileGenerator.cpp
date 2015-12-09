@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "TestFileGenerator.h"
 
-TestFileGenerator::TestFileGenerator(unsigned int testFileSize, DataBaseConfiguration dbConf, string filePath, float validDocumentPourcentage)
+TestFileGenerator::TestFileGenerator(DataBaseHandler *dbHandler, unsigned int testFileSize, float validDocumentPourcentage, string filePath)
 {
 	TestFileGenerator::testFileSize = testFileSize;
 	TestFileGenerator::filePath = filePath;
 	TestFileGenerator::validDocumentPourcentage = validDocumentPourcentage;
-	TestFileGenerator::dbHandler = new DataBaseHandler(dbConf);
+	TestFileGenerator::dbHandler = dbHandler;
 }
 
 unsigned int TestFileGenerator::getNonValidDocumentsCount()

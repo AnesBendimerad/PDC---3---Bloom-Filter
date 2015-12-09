@@ -20,7 +20,7 @@ private:
 	vector<Document*> getNonValidDocuments();
 	string generateLine(vector<Document*> * nonValidDocuments, int leftLinesSize);
 public:
-	TestFileGenerator(unsigned int testFileSize, DataBaseConfiguration dbConf, string filePath = DEFAULT_FILE_PATH, float validDocumentPourcentage = DEFAULT_POURCENTAGE);
+	TestFileGenerator(DataBaseHandler *dbHandler, unsigned int testFileSize, float validDocumentPourcentage = DEFAULT_POURCENTAGE, string filePath = DEFAULT_FILE_PATH);
 	bool generate();
 	~TestFileGenerator();
 };

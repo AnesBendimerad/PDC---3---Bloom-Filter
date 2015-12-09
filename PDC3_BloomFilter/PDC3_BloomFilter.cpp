@@ -22,14 +22,5 @@ int main(int argc, char** argv) {
 	else {
 		cout << "error : you must specify a configuration file" << endl;
 	}
-	/*DataBaseConfiguration dbConf;
-	dbConf.contactPoints = "127.0.0.1";
-	dbConf.keySpace = "documentDBV1";
-	dbConf.table = "documentTable";
-	BloomFilterBasedDBController *controller = new BloomFilterBasedDBController(dbConf, 10000,5, nullptr);
-	controller->initBloomFilter();
-	string result = controller->processDocumentsTestFile("myTestFile.txt",BLOOM_VERIFICATION);
-	cout << result << endl;
-	system("Pause");*/
 	return 0; 
 }
