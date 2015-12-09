@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="BloomFilter.h" />
     <ClInclude Include="BloomFilterBasedDBController.h" />
+    <ClInclude Include="CassandraAdditionalFunctions.h" />
     <ClInclude Include="DataBaseConfiguration.h" />
     <ClInclude Include="DataBaseGenerator.h" />
     <ClInclude Include="DataBaseHandler.h" />
@@ -168,6 +169,7 @@
   <ItemGroup>
     <ClCompile Include="BloomFilter.cpp" />
     <ClCompile Include="BloomFilterBasedDBController.cpp" />
+    <ClCompile Include="CassandraAdditionalFunctions.cpp" />
     <ClCompile Include="DataBaseGenerator.cpp" />
     <ClCompile Include="DataBaseHandler.cpp" />
     <ClCompile Include="Document.cpp" />

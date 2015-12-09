@@ -98,6 +98,27 @@ DocumentIterator * DataBaseHandler::getDocumentIterator(string countryCode)
 	}
 }
 
+unsigned long long DataBaseHandler::getDocumentsCount(string countryCode)
+{
+	string query = "SELECT COUNT(*) FROM " + dataBaseConfiguration.keySpace
+		+ "." + dataBaseConfiguration.table;
+	if (countryCode.compare("") != 0) {
+		query = query + " WHERE " + COUNTRY_CODE + " = '" + countryCode + "'";
+	}
+	query = query + " LIMIT 1000000000";
+	const CassResult* result = getResultOfQuery(query);
+	if (result != nullptr) {
+		CassIterator* rows = cass_iterator_from_result(result);
+		if (cass_iterator_next(rows)) {
+			const CassRow* row = cass_iterator_get_row(rows);
+			const CassValue* value = cass_row_get_column_by_name(row, "count");
+			
+		}
+	}
+	// not implemented completely yet
+	return 0;
+}
+
 DataBaseHandler::~DataBaseHandler()
 {
 	cass_future_free(connect_future);
