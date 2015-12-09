@@ -24,6 +24,11 @@ Document * DocumentIterator::getNextDocument()
 	}
 }
 
+size_t DocumentIterator::getSize()
+{
+	return cass_result_row_count(result);
+}
+
 DocumentIterator::~DocumentIterator()
 {
 	cass_result_free(result);

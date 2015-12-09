@@ -9,5 +9,6 @@ private:
 public:
 	DocumentIterator(const CassResult* result);
 	Document * getNextDocument();
+	size_t getSize();
 	~DocumentIterator();
 };
