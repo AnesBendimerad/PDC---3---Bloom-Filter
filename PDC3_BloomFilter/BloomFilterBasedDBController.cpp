@@ -19,6 +19,11 @@ void BloomFilterBasedDBController::initBloomFilter()
 	}
 }
 
+void BloomFilterBasedDBController::reinitBloomFilter(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
+{
+	this->bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
+}
+
 bool BloomFilterBasedDBController::addDocument(Document * document)
 {
 	if (this->dbHandler->addDocument(document))
