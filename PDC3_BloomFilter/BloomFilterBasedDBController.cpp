@@ -71,6 +71,14 @@ BloomFilterBasedDBController::~BloomFilterBasedDBController()
 	delete this->dbHandler;
 	delete this->bloomFilter;
 }
+
+/*
+	Result format :
+	if (verificationType==BLOOM_VERIFICATION)
+		"N:1000 NV:10 FP:7 FPR:0.01"
+	else
+		"N:1000 NV:10"
+*/
 string BloomFilterBasedDBController::processDocumentsTestFile(string filePath, unsigned int verificationType)
 {
 	ifstream inputStream(filePath, ios::in);
