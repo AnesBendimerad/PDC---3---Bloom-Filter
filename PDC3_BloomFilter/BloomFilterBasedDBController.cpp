@@ -119,7 +119,9 @@ string BloomFilterBasedDBController::processDocumentsTestFile(string filePath, u
 			falsePositiveCount++;
 		}
 	}
-	falsePositiveRate = (float) ((1.* falsePositiveCount) / testFileSize);
+	unsigned int quotient = testFileSize - nonValidDocumentsCount;
+	if (quotient == 0) falsePositiveRate = 0;
+	else falsePositiveRate = (float) ((1.* falsePositiveCount) / quotient);
 	if (verificationType == BLOOM_VERIFICATION) {
 		return "N:" + to_string(testFileSize) + " NV:" + to_string(nonValidDocumentsCount) + " FP:" + to_string(falsePositiveCount) + " FPR:" + to_string(falsePositiveRate);
 	}
