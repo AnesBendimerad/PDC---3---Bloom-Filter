@@ -96,6 +96,12 @@
     <ClInclude Include="CassandraAdditionalFunctions.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="TestFileGenerator.h">
+      <Filter>Header Files\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomAdditionalOperations.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -141,6 +147,12 @@
       <Filter>Source Files\structures</Filter>
     </ClCompile>
     <ClCompile Include="CassandraAdditionalFunctions.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="TestFileGenerator.cpp">
+      <Filter>Source Files\controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomAdditionalOperations.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>

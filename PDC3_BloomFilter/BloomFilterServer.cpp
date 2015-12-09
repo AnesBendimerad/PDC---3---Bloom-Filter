@@ -58,8 +58,13 @@ void BloomFilterServer::prepareFromConfigFile(string configFilePath)
 
 void BloomFilterServer::init()
 {
+	chrono::high_resolution_clock::time_point t1 = chrono::high_resolution_clock::now();
 	bloomFilterBasedDBController->initBloomFilter();
-	cout << "Initilized the Bloom Filter" << endl << "-----------------------" << endl;
+	chrono::high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now();
+	unsigned long long duration = (t2 - t1).count() / 1000000;
+	string informations = to_string(duration) + " ms";
+
+	cout << "Initilized the Bloom Filter in " << informations << endl << "-----------------------" << endl;
 }
 
 void BloomFilterServer::reinit(string configFilePath)

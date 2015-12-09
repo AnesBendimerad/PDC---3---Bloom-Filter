@@ -25,9 +25,9 @@ bool DataBaseGenerator::createAndGenerateDB()
 
 	while (i < dataBaseSize){
 		 
-		doc.documentNumber = RandomString(documentNumberSize);
+		doc.documentNumber = getRandomString(documentNumberSize);
 		doc.countryCode = RandomCountryCode();
-		doc.documentType = RandomString(documentTypeSize);
+		doc.documentType = getRandomString(documentTypeSize);
 		dataBaseHandler->addDocument(&doc);
 		i++;
 	}
@@ -35,17 +35,6 @@ bool DataBaseGenerator::createAndGenerateDB()
 	return true;
 }
 
-string DataBaseGenerator::RandomString(unsigned int len)
-{
-	
-	string str = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-	unsigned int pos;
-	while (str.size() != len) {
-		pos = ((rand() % (str.size() - 1)));
-		str.erase(pos, 1);
-	}
-	return str;
-}
 
 std::vector<std::string> * DataBaseGenerator::loadCountryCode(){
 
