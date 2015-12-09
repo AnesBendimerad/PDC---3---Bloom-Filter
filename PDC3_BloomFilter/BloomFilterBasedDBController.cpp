@@ -53,6 +53,7 @@ bool BloomFilterBasedDBController::doesDocumentNumberExist(string documentNumber
 	}	
 }
 
+
 Document * BloomFilterBasedDBController::getDocument(string documentNumber)
 {
 	if (!this->bloomFilter->readKey(documentNumber))
@@ -69,4 +70,39 @@ BloomFilterBasedDBController::~BloomFilterBasedDBController()
 {
 	delete this->dbHandler;
 	delete this->bloomFilter;
+}
+string BloomFilterBasedDBController::processDocumentsTestFile(string filePath, unsigned int verificationType)
+{
+	ifstream inputStream(filePath, ios::in);
+
+	unsigned int testFileSize = 0;
+	unsigned int nonValidDocumentsCount = 0;
+	unsigned int falsePositiveCount = 0;
+	float falsePositiveRate = 0;
+
+	string token;
+	string annotation;
+	bool queryResult;
+	if (inputStream.fail()) {
+		throw runtime_error("Failed when openning file");
+	}
+	
+	while (inputStream >> token) {
+		inputStream >> annotation;
+		testFileSize++;
+		if (annotation.compare("1") == 0) {
+			nonValidDocumentsCount++;
+		}
+		queryResult = doesDocumentNumberExist(token, verificationType);
+		if ((queryResult) && (annotation.compare("0")==0)) {
+			falsePositiveCount++;
+		}
+	}
+	falsePositiveRate = (1.* falsePositiveCount) / testFileSize;
+	if (verificationType == BLOOM_VERIFICATION) {
+		return "N:" + to_string(testFileSize) + " NV:" + to_string(nonValidDocumentsCount) + " FP:" + to_string(falsePositiveCount) + " FPR:" + to_string(falsePositiveRate);
+	}
+	else {
+		return "N:" + to_string(testFileSize) + " NV:" + to_string(nonValidDocumentsCount);
+	}
 }
