@@ -66,6 +66,11 @@ Document * BloomFilterBasedDBController::getDocument(string documentNumber)
 	}
 }
 
+DataBaseHandler * BloomFilterBasedDBController::getDataBaseHandler()
+{
+	return dbHandler;
+}
+
 BloomFilterBasedDBController::~BloomFilterBasedDBController()
 {
 	delete this->dbHandler;

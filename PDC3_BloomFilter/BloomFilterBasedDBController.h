@@ -17,5 +17,6 @@ public:
 	bool doesDocumentNumberExist(string documentNumber, unsigned int verificationType = BLOOM_AND_DB_VERIFICATION);
 	string	 processDocumentsTestFile(string filePath, unsigned int verificationType = BLOOM_AND_DB_VERIFICATION);
 	Document* getDocument(string documentNumber);
+	DataBaseHandler * getDataBaseHandler();
 	~BloomFilterBasedDBController();
 };
