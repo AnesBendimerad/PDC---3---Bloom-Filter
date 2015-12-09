@@ -20,9 +20,10 @@
 #define DEFAULT_BF_SIZE				10009
 #define DEFAULT_BF_HASHNUMBER		5
 
-#define EXISTS_COMMAND				"exists" // exists <document_number> [<option_of_search>]
+#define EXISTS_COMMAND				"exists" // exists <document_number> [<verification_type>]
 #define GET_COMMAND					"get"	 // get    <document_number>
 #define REINIT_COMMAND				"reinit" // reinit <config_file_path>
+#define TEST_COMMAND				"test"   // test <test_file_size> <valid_document_pourcentage> [<verification_type>] [USE_LAST]
 
 #define RESPONSE_END_TAG			"<END/>"
 class BloomFilterServer :

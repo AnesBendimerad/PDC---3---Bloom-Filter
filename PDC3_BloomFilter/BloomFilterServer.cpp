@@ -112,7 +112,7 @@ string BloomFilterServer::executeRequest(string query)
 				response = "1";
 				if (option == BLOOM_VERIFICATION)
 				{
-					response += "-"; // if "-" is added => Possibility of true positive
+					response += "-"; // if "-" is added => Possibility of false positive
 				}
 			}
 			else
