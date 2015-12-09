@@ -8,6 +8,7 @@ using namespace std;
 BloomFilterServer::BloomFilterServer(string configFilePath) : Server()
 {
 	this->prepareFromConfigFile(configFilePath);
+	lastTestFilePath = "";
 }
 
 
@@ -124,8 +125,29 @@ string BloomFilterServer::executeRequest(string query)
 		{
 			this->reinit(tokens[1]);
 		}
+		else if (strcmp(tokens[0].c_str(), TEST_COMMAND) == 0)
+		{
+			// run test command
+			int testFileSize = atoi(tokens[1].c_str());
+			float validDocumentPourcentage= float(atof(tokens[2].c_str()));
+			int verificationType = BLOOM_AND_DB_VERIFICATION;
+			if ((tokens.size() == 5) || (tokens.size() == 4 && (strcmp(tokens[3].c_str(), USE_LAST_IF_EXISTS) != 0))) {
+				verificationType = atoi(tokens[3].c_str());
+			}
+			if (tokens.size() == 5 && (tokens[4].compare(USE_LAST_IF_EXISTS) != 0)) {
+				ok_or_ko = "KO";
+				response = "Incorrect syntax !";
+			}
+			if (lastTestFilePath.compare("") == 0 || tokens.size() == 3 || (tokens.size() == 4 && tokens[3].compare(USE_LAST_IF_EXISTS) != 0))
+			{
+				lastTestFilePath = DEFAULT_FILE_PATH;
+				TestFileGenerator * generator = new TestFileGenerator(bloomFilterBasedDBController->getDataBaseHandler(), testFileSize, validDocumentPourcentage, lastTestFilePath);
+				generator->generate();
+			}
+			response = bloomFilterBasedDBController->processDocumentsTestFile(lastTestFilePath, verificationType);
+		}
 	}
-	
+
 	chrono::high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now();
 	unsigned long long duration = (t2 - t1).count()/1000000;
 	informations = "time : "+to_string(duration)+" ms";
@@ -157,6 +179,9 @@ vector<string> BloomFilterServer::getCommandArgument(string query)
 		}
 		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0 && tokens.size() == 2)
 		{
+			return tokens;
+		}
+		else if (strcmp(tokens[0].c_str(), TEST_COMMAND) == 0 && tokens.size() >= 3 && tokens.size() <= 5) {
 			return tokens;
 		}
 	}
