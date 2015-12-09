@@ -6,7 +6,7 @@
 #include <iterator>
 #include <sstream>
 #include "BloomFilterBasedDBController.h"
-
+#include "TestFileGenerator.h"
 #define CONFIG_SERVER_PORT			"port"
 #define CONFIG_DB_CONTACTPOINTS		"db.contactPoints" 
 #define CONFIG_DB_KEYSPACE			"db.keySpace" 
@@ -23,8 +23,8 @@
 #define EXISTS_COMMAND				"exists" // exists <document_number> [<verification_type>]
 #define GET_COMMAND					"get"	 // get    <document_number>
 #define REINIT_COMMAND				"reinit" // reinit <config_file_path>
-#define TEST_COMMAND				"test"   // test <test_file_size> <valid_document_pourcentage> [<verification_type>] [USE_LAST]
-
+#define TEST_COMMAND				"test"   // test <test_file_size> <valid_document_pourcentage> [<verification_type>] [USE_LAST_IF_EXISTS]
+#define USE_LAST_IF_EXISTS			"USE_LAST_IF_EXISTS"
 #define RESPONSE_END_TAG			"<END/>"
 class BloomFilterServer :
 	public Server
@@ -42,6 +42,6 @@ private :
 
 	vector<string> getCommandArgument(string query); // return empty vector if the command is not correct
 	BloomFilterBasedDBController* bloomFilterBasedDBController;
-	
+	string lastTestFilePath;
 };
 
