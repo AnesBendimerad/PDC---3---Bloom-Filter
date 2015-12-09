@@ -20,7 +20,7 @@ using namespace std;
 int main(int argc, char** argv) {
 	//commande progName port=2014 db.contactPoints=127.0.0.1 db.keySpace=documentDataBase db.table=documentTable bf.sizeInBit=10009 bf.hashFunctionNumber=5
 	//command : prog configFileName
-	
+	cout << "--------------------------------------------" << endl;
 	unsigned int port = 0;
 	DataBaseConfiguration config;
 	config.contactPoints = "";

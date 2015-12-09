@@ -21,7 +21,10 @@ void BloomFilterBasedDBController::initBloomFilter()
 
 void BloomFilterBasedDBController::reinitBloomFilter(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
 {
+	delete this->bloomFilter;
+	if (bloomFilterHashFunction == nullptr) bloomFilterHashFunction = new MurmurHasher();
 	this->bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
+	this->initBloomFilter();
 }
 
 bool BloomFilterBasedDBController::addDocument(Document * document)
@@ -116,7 +119,7 @@ string BloomFilterBasedDBController::processDocumentsTestFile(string filePath, u
 			falsePositiveCount++;
 		}
 	}
-	falsePositiveRate = (1.* falsePositiveCount) / testFileSize;
+	falsePositiveRate = (float) ((1.* falsePositiveCount) / testFileSize);
 	if (verificationType == BLOOM_VERIFICATION) {
 		return "N:" + to_string(testFileSize) + " NV:" + to_string(nonValidDocumentsCount) + " FP:" + to_string(falsePositiveCount) + " FPR:" + to_string(falsePositiveRate);
 	}

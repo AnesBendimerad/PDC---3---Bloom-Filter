@@ -5,56 +5,11 @@
 #include <chrono>
 using namespace std;
 
-BloomFilterServer::BloomFilterServer(string configFilePath) : Server()
+BloomFilterServer::BloomFilterServer(unsigned int port, BloomFilterBasedDBController* bloomFilterBasedDBController) : Server()
 {
-	this->prepareFromConfigFile(configFilePath);
+	this->port=port;
+	this->bloomFilterBasedDBController = bloomFilterBasedDBController;
 	lastTestFilePath = "";
-}
-
-
-void BloomFilterServer::prepareFromConfigFile(string configFilePath)
-{
-	string element;
-	ifstream configFile(configFilePath.c_str());
-	DataBaseConfiguration config;
-	config.contactPoints = DEFAULT_DB_CONTACTPOINTS;
-	config.keySpace = DEFAULT_DB_KEYSPACE;
-	config.table = DEFAULT_DB_TABLE;
-	uint32_t bloomSizeInBit = DEFAULT_BF_SIZE;
-	uint32_t bloomHashNumber = DEFAULT_BF_HASHNUMBER;
-
-	if (configFile.is_open())
-	{
-		while (configFile >> element)
-		{
-			if (element.compare(CONFIG_SERVER_PORT) == 0)
-			{
-				configFile >> this->port;
-			}
-			else if (element.compare(CONFIG_DB_CONTACTPOINTS) == 0)
-			{
-				configFile >> config.contactPoints;
-			}
-			else if (element.compare(CONFIG_DB_KEYSPACE) == 0)
-			{
-				configFile >> config.keySpace;
-			}
-			else if (element.compare(CONFIG_DB_TABLE) == 0)
-			{
-				configFile >> config.table;
-			}
-			else if (element.compare(CONFIG_BF_SIZE) == 0)
-			{
-				configFile >> bloomSizeInBit;
-			}
-			else if (element.compare(CONFIG_BF_HASHNUMBER) == 0)
-			{
-				configFile >> bloomHashNumber;
-			}
-		}
-	}
-
-	this->bloomFilterBasedDBController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber, nullptr);
 }
 
 void BloomFilterServer::init()
@@ -65,14 +20,19 @@ void BloomFilterServer::init()
 	unsigned long long duration = (t2 - t1).count() / 1000000;
 	string informations = to_string(duration) + " ms";
 
-	cout << "Initilized the Bloom Filter in " << informations << endl << "-----------------------" << endl;
+	cout << "Initilized the Bloom Filter in " << informations << endl << "------------------------------------------" << endl;
 }
 
-void BloomFilterServer::reinit(string configFilePath)
+void BloomFilterServer::reinit(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
 {
-	this->prepareFromConfigFile(configFilePath);
-	this->bloomFilterBasedDBController->initBloomFilter();
-	cout << "Reinitilized the Bloom Filter" << endl << "-----------------------" << endl;
+	if (bloomFilterSizeInBit == 0) bloomFilterHashFunctionsNumber = 2;
+	if (bloomFilterHashFunctionsNumber == 0) bloomFilterHashFunctionsNumber = 1;
+
+	this->bloomFilterBasedDBController->reinitBloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
+	cout << "Reinitilized the Bloom Filter" << endl;
+	cout << "\t" << "bloom filter size" << " : " << bloomFilterSizeInBit << endl;
+	cout << "\t" << "bloom filter hash function number" << " : " << bloomFilterHashFunctionsNumber << endl;
+	cout << "------------------------------------------" << endl;
 }
 
 string BloomFilterServer::executeRequest(string query)
@@ -123,7 +83,7 @@ string BloomFilterServer::executeRequest(string query)
 		} 
 		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0)
 		{
-			this->reinit(tokens[1]);
+			this->reinit(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()));
 		}
 		else if (strcmp(tokens[0].c_str(), TEST_COMMAND) == 0)
 		{
@@ -177,7 +137,7 @@ vector<string> BloomFilterServer::getCommandArgument(string query)
 		{
 			return tokens;
 		}
-		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0 && tokens.size() == 2)
+		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0 && tokens.size() == 3)
 		{
 			return tokens;
 		}
