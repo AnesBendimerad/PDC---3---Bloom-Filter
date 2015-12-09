@@ -40,9 +40,9 @@ string BloomFilterServer::executeRequest(string query)
 	chrono::high_resolution_clock::time_point t1 = chrono::high_resolution_clock::now();
 
 	string ok_or_ko = "OK";
-	string response;
-	string informations;
-	string answer; //answer = <ok_or_ko> (<response>) (<informations>) <END/>
+	string response="";
+	string informations="";
+	string answer=""; //answer = <ok_or_ko> (<response>) (<informations>) <END/>
 	
 	cout << "exectuting "<< query << " ... " << endl;
 	
@@ -100,17 +100,25 @@ string BloomFilterServer::executeRequest(string query)
 			}
 			if (lastTestFilePath.compare("") == 0 || tokens.size() == 3 || (tokens.size() == 4 && tokens[3].compare(USE_LAST_IF_EXISTS) != 0))
 			{
+				chrono::high_resolution_clock::time_point ta = chrono::high_resolution_clock::now();
 				lastTestFilePath = DEFAULT_FILE_PATH;
 				TestFileGenerator * generator = new TestFileGenerator(bloomFilterBasedDBController->getDataBaseHandler(), testFileSize, validDocumentPourcentage, lastTestFilePath);
 				generator->generate();
+				chrono::high_resolution_clock::time_point tb = chrono::high_resolution_clock::now();
+				unsigned long long duration = (tb - ta).count() / 1000000;
+				informations += "generation time : " + to_string(duration) + " ms, ";
 			}
+			chrono::high_resolution_clock::time_point ta = chrono::high_resolution_clock::now();
 			response = bloomFilterBasedDBController->processDocumentsTestFile(lastTestFilePath, verificationType);
+			chrono::high_resolution_clock::time_point tb = chrono::high_resolution_clock::now();
+			unsigned long long duration = (tb - ta).count() / 1000000;
+			informations += "test time : " + to_string(duration) + " ms, ";
 		}
 	}
 
 	chrono::high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now();
 	unsigned long long duration = (t2 - t1).count()/1000000;
-	informations = "time : "+to_string(duration)+" ms";
+	informations+= "time : "+to_string(duration)+" ms";
 
 	answer = ok_or_ko + " (" + response + ")" + " (" + informations + ") "+ RESPONSE_END_TAG;
 	cout << "Answer sent : " << answer << endl;
