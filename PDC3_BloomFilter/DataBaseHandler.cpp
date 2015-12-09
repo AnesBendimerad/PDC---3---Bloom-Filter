@@ -111,11 +111,9 @@ unsigned long long DataBaseHandler::getDocumentsCount(string countryCode)
 		CassIterator* rows = cass_iterator_from_result(result);
 		if (cass_iterator_next(rows)) {
 			const CassRow* row = cass_iterator_get_row(rows);
-			const CassValue* value = cass_row_get_column_by_name(row, "count");
-			
+			return atoi(getColumnValue(row, "count").c_str());
 		}
 	}
-	// not implemented completely yet
 	return 0;
 }
 

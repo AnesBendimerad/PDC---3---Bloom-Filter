@@ -1,5 +1,6 @@
 #pragma once
 #include <cassandra.h>
+#include "CassandraAdditionalFunctions.h"
 #include "DataBaseConfiguration.h"
 #include "DocumentIterator.h"
 class DataBaseHandler {
