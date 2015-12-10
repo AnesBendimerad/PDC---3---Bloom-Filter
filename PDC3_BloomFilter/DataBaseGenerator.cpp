@@ -121,7 +121,7 @@ bool DataBaseGenerator::createDB(){
 	/* This operation will block until the result is ready */
 	CassError rc = cass_future_error_code(connect_future);
 
-	printf("Database connection result: %s\n", cass_error_desc(rc));
+	//printf("Database connection result: %s\n", cass_error_desc(rc));
 
 	/* Build statement and execute query ... */
 
@@ -154,7 +154,7 @@ bool DataBaseGenerator::createDB(){
 	}
 
 	/* Create Index*/
-	string creatIndex = "create index if not exists " + string(COUNTRY_CODE) + "_index on " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + "(" + string(COUNTRY_CODE) + "); ";
+	string creatIndex = "create index if not exists on " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + "(" + string(COUNTRY_CODE) + "); ";
 	statement = cass_statement_new(creatIndex.c_str(), 0);
 	result_future = cass_session_execute(session, statement);
 	if (cass_future_error_code(result_future) != CASS_OK)
