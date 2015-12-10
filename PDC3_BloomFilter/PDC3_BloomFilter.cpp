@@ -17,10 +17,13 @@ using namespace std;
 #define CONFIG_BF_SIZE				"bf.sizeInBit" 
 #define CONFIG_BF_HASHNUMBER		"bf.hashFunctionNumber"
 
-int main(int argc, char** argv) {
-	//commande progName port=2014 db.contactPoints=127.0.0.1 db.keySpace=documentDataBase db.table=documentTable bf.sizeInBit=10009 bf.hashFunctionNumber=5
-	//command : prog configFileName
-	cout << "--------------------------------------------" << endl;
+#define CONFIG_DBSIZE		"dbSize"
+
+#define COMMAND_LAUNCH_SERVER		"launchServer"
+#define COMMAND_GENERATE_DB			"generateDB"
+
+bool launchServerCommand(int argc, char** argv)
+{
 	unsigned int port = 0;
 	DataBaseConfiguration config;
 	config.contactPoints = "";
@@ -29,20 +32,20 @@ int main(int argc, char** argv) {
 	uint32_t bloomSizeInBit = 0;
 	uint32_t bloomHashNumber = 0;
 
-	bool error = (argc != 7);
-	if (! error)
+	bool error = (argc != 8);
+	if (!error)
 	{
 		string argument;
 		string argumentName;
 		string argumentValue;
 
-		for (unsigned int i = 1;i < 7;i++)
+		for (int i = 2;i < argc;i++)
 		{
 			argument = string(argv[i]);
 			unsigned int equalPosition = argument.find("=");
 			if (equalPosition < string::npos) {
 				argumentName = argument.substr(0, equalPosition);
-				argumentValue = argument.substr(equalPosition+1);
+				argumentValue = argument.substr(equalPosition + 1);
 
 				if (strcmp(argumentName.c_str(), CONFIG_SERVER_PORT) == 0) {
 					if (port == 0) port = atoi(argumentValue.c_str());
@@ -63,7 +66,7 @@ int main(int argc, char** argv) {
 					}
 					else error = true;
 				}
-				else if (strcmp(argumentName.c_str(), CONFIG_DB_TABLE) == 0) 
+				else if (strcmp(argumentName.c_str(), CONFIG_DB_TABLE) == 0)
 				{
 					if (config.table.empty()) {
 						config.table = argumentValue;
@@ -95,17 +98,110 @@ int main(int argc, char** argv) {
 		cout << "\t" << CONFIG_DB_TABLE << " : " << config.table << endl;
 		cout << "\t" << CONFIG_BF_SIZE << " : " << bloomSizeInBit << endl;
 		cout << "\t" << CONFIG_BF_HASHNUMBER << " : " << bloomHashNumber << endl;
-		
+
 		BloomFilterBasedDBController* bloomFilterBasedDBController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber, nullptr);
 		BloomFilterServer bloomFilterServer(port, bloomFilterBasedDBController);
-		
+
 		cout << "--------------------------------------------" << endl;
 		cout << "Bloom server launched" << endl;
-		
+
 		bloomFilterServer.start();
 	}
-	else {
+	return !error;
+}
+
+bool generateDBCommand(int argc, char** argv)
+{
+	DataBaseConfiguration config;
+	config.contactPoints = "";
+	config.keySpace = "";
+	config.table = "";
+	uint32_t dbSize = 0;
+
+	bool error = (argc != 6);
+	if (!error)
+	{
+		string argument;
+		string argumentName;
+		string argumentValue;
+
+		for (int i = 2;i < argc;i++)
+		{
+			argument = string(argv[i]);
+			unsigned int equalPosition = argument.find("=");
+			if (equalPosition < string::npos) {
+				argumentName = argument.substr(0, equalPosition);
+				argumentValue = argument.substr(equalPosition + 1);
+
+				if (strcmp(argumentName.c_str(), CONFIG_DB_CONTACTPOINTS) == 0)
+				{
+					if (config.contactPoints.empty()) {
+						config.contactPoints = argumentValue;
+					}
+					else error = true;
+				}
+				else if (strcmp(argumentName.c_str(), CONFIG_DB_KEYSPACE) == 0)
+				{
+					if (config.keySpace.empty()) {
+						config.keySpace = argumentValue;
+					}
+					else error = true;
+				}
+				else if (strcmp(argumentName.c_str(), CONFIG_DB_TABLE) == 0)
+				{
+					if (config.table.empty()) {
+						config.table = argumentValue;
+					}
+					else error = true;
+				}
+				else if (strcmp(argumentName.c_str(), CONFIG_DBSIZE) == 0) {
+					if (dbSize == 0) dbSize = atoi(argumentValue.c_str());
+					else error = true;
+					if (dbSize == 0) error = true;
+				}
+				else error = true;
+			}
+			else error = true;
+			if (error) break;
+		}
+	}
+
+	if (!error) {
+		cout << "Generation de la base de donnees ... " << endl;
+		cout << "\t" << CONFIG_DB_CONTACTPOINTS << " : " << config.contactPoints << endl;
+		cout << "\t" << CONFIG_DB_KEYSPACE << " : " << config.keySpace << endl;
+		cout << "\t" << CONFIG_DB_TABLE << " : " << config.table << endl;
+		cout << "\t" << CONFIG_DBSIZE << " : " << dbSize << endl;
+
+		DataBaseGenerator* DBG = new DataBaseGenerator(config, dbSize);
+		DBG->createAndGenerateDB();
+		cout << "Generation completed of " << dbSize << " non valid documents" << endl;
+		cout << "--------------------------------------------" << endl;
+		cout << "" << endl;
+	}
+	return !error;
+}
+
+int main(int argc, char** argv) {
+	cout << "--------------------------------------------" << endl;
+	bool error = (argc < 2);
+	if (!error)
+	{
+		if (strcmp(argv[1], COMMAND_LAUNCH_SERVER) == 0 && argc==8) {
+			//commande 1 - <progName> launchServer port=2014 db.contactPoints=127.0.0.1 db.keySpace=documentDataBase db.table=documentTable bf.sizeInBit=10009 bf.hashFunctionNumber=5
+			error=!launchServerCommand(argc, argv);
+		}
+		else if (strcmp(argv[1], COMMAND_GENERATE_DB) == 0 && argc == 6)
+		{
+			//commande 2 - <progName> generateDB db.contactPoints=127.0.0.1 db.keySpace=documentDataBase db.table=documentTable dbSize=100000
+			error=!generateDBCommand(argc, argv);
+		}
+		else error = true;
+	}
+	if (error)
+	{
 		cout << "Error" << ":" << "Please specify all the parameters" << endl;
 	}
 	return 0; 
 }
+
