@@ -10,7 +10,7 @@ using namespace std;
 
 DataBaseGenerator::DataBaseGenerator(DataBaseConfiguration dataBaseConfiguration, unsigned int dataBaseSize)
 {
-	countryCode = loadCountryCode();
+	DataBaseGenerator::countryCode = new vector<string>(COUNTRY_CODES_BAG);
 	DataBaseGenerator::dataBaseConfiguration = dataBaseConfiguration;
 	DataBaseGenerator::dataBaseSize = dataBaseSize;
 }
@@ -35,71 +35,6 @@ bool DataBaseGenerator::createAndGenerateDB()
 	return true;
 }
 
-
-std::vector<std::string> * DataBaseGenerator::loadCountryCode(){
-
-	std::vector<std::string> * countryCode = new std::vector<std::string>();
-
-	countryCode->push_back("ABW");
-	countryCode->push_back("AFG");
-	countryCode->push_back("AGO");
-	countryCode->push_back("AIA");
-	countryCode->push_back("ALA");
-	countryCode->push_back("ALB");
-	countryCode->push_back("AND");
-	countryCode->push_back("ARE");
-	countryCode->push_back("ARG");
-	countryCode->push_back("ARM");
-	countryCode->push_back("ASM");
-	countryCode->push_back("ATA");
-	countryCode->push_back("ATF");
-	countryCode->push_back("ATG");
-	countryCode->push_back("AUS");
-	countryCode->push_back("AUT");
-	countryCode->push_back("AZE");
-	countryCode->push_back("BDI");
-	countryCode->push_back("BEL");
-	countryCode->push_back("BEN");
-	countryCode->push_back("BES");
-	countryCode->push_back("BFA");
-	countryCode->push_back("BGD");
-	countryCode->push_back("BGR");
-	countryCode->push_back("BHR");
-	countryCode->push_back("BHS");
-	countryCode->push_back("BIH");
-	countryCode->push_back("BLM");
-	countryCode->push_back("BLR");
-	countryCode->push_back("BLZ");
-	countryCode->push_back("BMU");
-	countryCode->push_back("BOL");
-	countryCode->push_back("BRA");
-	countryCode->push_back("BRB");
-	countryCode->push_back("BRN");
-	countryCode->push_back("BTN");
-	countryCode->push_back("CMR");
-	countryCode->push_back("COD");
-	countryCode->push_back("COG");
-	countryCode->push_back("COK");
-	countryCode->push_back("COL");
-	countryCode->push_back("COM");
-	countryCode->push_back("CPV");
-	countryCode->push_back("CRI");
-	countryCode->push_back("CUB");
-	countryCode->push_back("CUW");
-	countryCode->push_back("CXR");
-	countryCode->push_back("CYM");
-	countryCode->push_back("CYP");
-	countryCode->push_back("CZE");
-	countryCode->push_back("DEU");
-	countryCode->push_back("DJI");
-	countryCode->push_back("MAR");
-	countryCode->push_back("MCO");
-	countryCode->push_back("MDA");
-	
-
-	return countryCode;
-}
-
 string DataBaseGenerator::RandomCountryCode(){
 
 	std::random_shuffle(countryCode->begin(), countryCode->end());
@@ -121,7 +56,7 @@ bool DataBaseGenerator::createDB(){
 	/* This operation will block until the result is ready */
 	CassError rc = cass_future_error_code(connect_future);
 
-	printf("Database connection result: %s\n", cass_error_desc(rc));
+	//printf("Database connection result: %s\n", cass_error_desc(rc));
 
 	/* Build statement and execute query ... */
 
@@ -154,7 +89,7 @@ bool DataBaseGenerator::createDB(){
 	}
 
 	/* Create Index*/
-	string creatIndex = "create index if not exists " + string(COUNTRY_CODE) + "_index on " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + "(" + string(COUNTRY_CODE) + "); ";
+	string creatIndex = "create index if not exists on " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + "(" + string(COUNTRY_CODE) + "); ";
 	statement = cass_statement_new(creatIndex.c_str(), 0);
 	result_future = cass_session_execute(session, statement);
 	if (cass_future_error_code(result_future) != CASS_OK)
