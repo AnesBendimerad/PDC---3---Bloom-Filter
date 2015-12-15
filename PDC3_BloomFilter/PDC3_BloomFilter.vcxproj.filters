@@ -156,4 +156,7 @@
       <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
 </Project>

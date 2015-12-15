@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="BloomFilterBasedDBController">
+    <Position X="9" Y="6.5" Width="2.5" />
+    <Members>
+      <Method Name="~BloomFilterBasedDBController" Hidden="true" />
+      <Method Name="BloomFilterBasedDBController" Hidden="true" />
+      <Method Name="getDataBaseHandler" Hidden="true" />
+      <Method Name="initBloomFilter" Hidden="true" />
+      <Method Name="reinitBloomFilter" Hidden="true" />
+    </Members>
+    <AssociationLine Name="dbHandler" Type="DataBaseHandler">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.276" Y="1.78" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="bloomFilter" Type="BloomFilter">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="4.44" Y="1.892" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AJAEBEABAAAAAAAAAAIABAAAAAAACAIAAAAAACAAAAA=</HashCode>
+      <FileName>BloomFilterBasedDBController.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="dbHandler" />
+      <Field Name="bloomFilter" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DataBaseGenerator">
+    <Position X="6.5" Y="10" Width="2" />
+    <Members>
+      <Method Name="~DataBaseGenerator" Hidden="true" />
+      <Field Name="countryCode" Hidden="true" />
+      <Method Name="createDB" Hidden="true" />
+      <Method Name="DataBaseGenerator" Hidden="true" />
+      <Method Name="loadCountryCode" Hidden="true" />
+      <Method Name="RandomCountryCode" Hidden="true" />
+    </Members>
+    <AssociationLine Name="dataBaseConfiguration" Type="DataBaseConfiguration">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.83" Y="2.658" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAIAAAAgAAEAAAAABAACAAAACAACAAAAAAAAAIAAAAA=</HashCode>
+      <FileName>DataBaseGenerator.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="dataBaseConfiguration" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DataBaseHandler">
+    <Position X="6.5" Y="5.5" Width="2" />
+    <Members>
+      <Method Name="~DataBaseHandler" Hidden="true" />
+      <Field Name="cluster" Hidden="true" />
+      <Field Name="connect_future" Hidden="true" />
+      <Method Name="DataBaseHandler" Hidden="true" />
+      <Method Name="getResultOfQuery" Hidden="true" />
+      <Field Name="session" Hidden="true" />
+    </Members>
+    <AssociationLine Name="dataBaseConfiguration" Type="DataBaseConfiguration">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-0.88" Y="-4.616" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAEAAEBACBAAQAABAEAIAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataBaseHandler.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="dataBaseConfiguration" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="BloomFilterServer">
+    <Position X="9" Y="3.75" Width="2.25" />
+    <Members>
+      <Method Name="~BloomFilterServer" Hidden="true" />
+      <Method Name="BloomFilterServer" Hidden="true" />
+      <Method Name="destroy" Hidden="true" />
+      <Method Name="getCommandArgument" Hidden="true" />
+      <Field Name="lastTestFilePath" Hidden="true" />
+    </Members>
+    <AssociationLine Name="bloomFilterBasedDBController" Type="BloomFilterBasedDBController">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="1.47" Y="1.224" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAAQAAABEAQhAAAAAIAAAAAAAAAIAA=</HashCode>
+      <FileName>BloomFilterServer.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="bloomFilterBasedDBController" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Server">
+    <Position X="9.5" Y="0.75" Width="1.5" />
+    <Members>
+      <Method Name="~Server" Hidden="true" />
+      <Method Name="destroy" Hidden="true" />
+      <Method Name="init_connection" Hidden="true" />
+      <Method Name="read_client" Hidden="true" />
+      <Method Name="Server" Hidden="true" />
+      <Field Name="sock" Hidden="true" />
+      <Method Name="write_client" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAACAAgAAAAAAgAAAAAEAAAAAggAoAIAAAAgAAIQA=</HashCode>
+      <FileName>Server.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TestFileGenerator">
+    <Position X="9" Y="11" Width="2.25" />
+    <Members>
+      <Method Name="~TestFileGenerator" Hidden="true" />
+      <Method Name="generateLine" Hidden="true" />
+      <Method Name="getNonValidDocuments" Hidden="true" />
+      <Method Name="getNonValidDocumentsCount" Hidden="true" />
+      <Method Name="TestFileGenerator" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AQAAAAADACAAAAEAAAAAAgAAAAAAAFAAQAAAQAAAAAA=</HashCode>
+      <FileName>TestFileGenerator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IHasher">
+    <Position X="12.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>IHasher.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BloomFilter">
+    <Position X="12" Y="5.5" Width="2" />
+    <Members>
+      <Method Name="~BloomFilter" Hidden="true" />
+    </Members>
+    <AssociationLine Name="bitWiseArray" Type="BitWiseArray">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="4.786" Y="0.036" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="hashFunction" Type="IHasher">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="5.108" Y="3.364" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAQgAAAQAAAAAAAAAAAAAAAEAAAAEAAAAgAEAAAA=</HashCode>
+      <FileName>BloomFilter.h</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="bitWiseArray" />
+      <Field Name="hashFunction" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="DocumentIterator">
+    <Position X="9.25" Y="8.75" Width="1.75" />
+    <Members>
+      <Method Name="~DocumentIterator" Hidden="true" />
+      <Method Name="DocumentIterator" Hidden="true" />
+      <Field Name="rows" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAIABAAAABABAAAAAAAAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>DocumentIterator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HashIterator">
+    <Position X="12.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAIAQAAAAIAAAAAAAABA=</HashCode>
+      <FileName>HashIterator.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BitWiseArray">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <Members>
+      <Method Name="~BitWiseArray" Hidden="true" />
+      <Method Name="BitWiseArray" Hidden="true" />
+    </Members>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAYQBAAAAAAQIQAAAAAAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>BitWiseArray.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MurmurHasher" Collapsed="true">
+    <Position X="12.25" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAgAAABAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>MurmurHasher.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="DataBaseConfiguration">
+    <Position X="6.5" Y="7.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>DataBaseConfiguration.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Document">
+    <Position X="6.75" Y="2.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAQAAAAAAAAAAAAAAAAEAAAAAAAAAAA=</HashCode>
+      <FileName>Document.h</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
