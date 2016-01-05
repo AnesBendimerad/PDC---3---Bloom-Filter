@@ -54,7 +54,7 @@ string BloomFilterStats::getStringOfAllStats()
 	returned += "\t Size of bloom filter : " + to_string(bloom_filter_sizeInBit) + "\n";
 	returned += "\t Number of hash function of bloom filter : " + to_string(bloom_filter_hashFunctionsNumber) + "\n";
 	returned += "\t Type of hash function : " + bloom_filter_hashFunctionName + "\n";
-	returned += "\t Bloom Filter Filing rate : " + to_string(100*((1.0*number_of_one_in_filter)/ bloom_filter_sizeInBit)) + "%\n";
+	returned += "\t Bloom Filter Filing rate : " + to_string(100*((1.0*number_of_one_in_filter)/ bloom_filter_sizeInBit));
 	return returned;
 }
 

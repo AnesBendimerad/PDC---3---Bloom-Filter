@@ -34,7 +34,7 @@ bool launchServerCommand(int argc, char** argv)
 	config.table = "";
 	uint32_t bloomSizeInBit = 0;
 	uint32_t bloomHashNumber = 0;
-	int hashFunctionId = 0;
+	int hashFunctionId = -1;
 	bool error = (argc != LAUNCH_ARGUMENTS_NUMBER);
 	if (!error)
 	{
@@ -87,15 +87,9 @@ bool launchServerCommand(int argc, char** argv)
 					if (bloomHashNumber == 0) error = true;
 				}
 				else if (strcmp(argumentName.c_str(), CONFIG_BF_HASH_TYPE) == 0) {
-					if (strcmp(argumentValue.c_str(), VALUE_MURMUR_HASH) == 0) {
-						hashFunctionId = MURMUR_HASHER;
-					}
-					else if (strcmp(argumentValue.c_str(), VALUE_FNV1A_HASH) == 0) {
-						hashFunctionId = FNV1A_HASHER;
-					}
-					else {
-						error = true;
-					}
+					if (hashFunctionId < 0) hashFunctionId = atoi(argumentValue.c_str());
+					else error = true;
+					if (hashFunctionId > 1 || hashFunctionId < 0) error = true;
 				}
 				else error = true;
 			}
@@ -224,7 +218,7 @@ int main(int argc, char** argv) {
 	}
 	if (error)
 	{
-		cout << "Error" << ":" << "Please specify all the parameters" << endl;
+		cout << "Error " << ":" << " Please specify all the parameters correctly" << endl;
 	}
 	return 0; 
 }
