@@ -4,7 +4,7 @@
 #include "BloomFilterStats.h"
 BloomFilter::BloomFilter(uint32_t sizeInBit, unsigned int hashFunctionsNumber, IHasher * hashFunction)
 {
-	sizeInBit = getLesserPrimeNumber(sizeInBit);
+	sizeInBit = getUpperPrimeNumber(sizeInBit);
 	BloomFilter::bitWiseArray = new BitWiseArray(sizeInBit);
 	BloomFilter::hashFunctionsNumber = hashFunctionsNumber;
 	BloomFilter::hashFunction = hashFunction;
