@@ -35,7 +35,6 @@
       <Field Name="countryCode" Hidden="true" />
       <Method Name="createDB" Hidden="true" />
       <Method Name="DataBaseGenerator" Hidden="true" />
-      <Method Name="loadCountryCode" Hidden="true" />
       <Method Name="RandomCountryCode" Hidden="true" />
     </Members>
     <AssociationLine Name="dataBaseConfiguration" Type="DataBaseConfiguration">
@@ -44,7 +43,7 @@
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
-      <HashCode>AAIAAAAgAAEAAAAABAACAAAACAACAAAAAAAAAIAAAAA=</HashCode>
+      <HashCode>AAIAAAAgAAEAAAAABAACAAAACAACAAAAAAAAAAAAAAA=</HashCode>
       <FileName>DataBaseGenerator.h</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
@@ -52,7 +51,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="DataBaseHandler">
-    <Position X="6.5" Y="5.5" Width="2" />
+    <Position X="6.5" Y="5.5" Width="2.25" />
     <Members>
       <Method Name="~DataBaseHandler" Hidden="true" />
       <Field Name="cluster" Hidden="true" />
@@ -63,7 +62,7 @@
     </Members>
     <AssociationLine Name="dataBaseConfiguration" Type="DataBaseConfiguration">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="-0.88" Y="-4.616" />
+        <Position X="-4.616" Y="-0.88" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -85,7 +84,7 @@
     </Members>
     <AssociationLine Name="bloomFilterBasedDBController" Type="BloomFilterBasedDBController">
       <MemberNameLabel ManuallyPlaced="true">
-        <Position X="1.47" Y="1.224" />
+        <Position X="1.224" Y="1.47" />
       </MemberNameLabel>
     </AssociationLine>
     <TypeIdentifier>
@@ -97,14 +96,13 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="Server">
-    <Position X="9.5" Y="0.75" Width="1.5" />
+    <Position X="9.5" Y="0.75" Width="1.75" />
     <Members>
       <Method Name="~Server" Hidden="true" />
       <Method Name="destroy" Hidden="true" />
       <Method Name="init_connection" Hidden="true" />
       <Method Name="read_client" Hidden="true" />
       <Method Name="Server" Hidden="true" />
-      <Field Name="sock" Hidden="true" />
       <Method Name="write_client" Hidden="true" />
     </Members>
     <TypeIdentifier>
@@ -113,7 +111,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="TestFileGenerator">
-    <Position X="9" Y="11" Width="2.25" />
+    <Position X="9" Y="11" Width="2.5" />
     <Members>
       <Method Name="~TestFileGenerator" Hidden="true" />
       <Method Name="generateLine" Hidden="true" />
@@ -127,7 +125,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="IHasher">
-    <Position X="12.25" Y="8" Width="1.5" />
+    <Position X="12.25" Y="8" Width="1.75" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
       <FileName>IHasher.h</FileName>
@@ -171,6 +169,9 @@
   </Class>
   <Class Name="HashIterator">
     <Position X="12.25" Y="10.75" Width="1.5" />
+    <Members>
+      <Method Name="HashIterator" Hidden="true" />
+    </Members>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAEAAAAIAQAAAAIAAAAAAAABA=</HashCode>
       <FileName>HashIterator.h</FileName>
@@ -208,5 +209,5 @@
       <FileName>Document.h</FileName>
     </TypeIdentifier>
   </Struct>
-  <Font Name="Segoe UI" Size="9" />
+  <Font Name="Segoe UI" Size="10" />
 </ClassDiagram>

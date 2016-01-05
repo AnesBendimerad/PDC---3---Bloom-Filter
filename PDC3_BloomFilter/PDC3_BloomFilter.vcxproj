@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);E:\cassandra_bib_32\include</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;E:\cassandra_bib_32\lib</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\cassandra_bib_32\include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\cassandra_bib_32\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -157,6 +157,7 @@
     <ClInclude Include="DataBaseHandler.h" />
     <ClInclude Include="Document.h" />
     <ClInclude Include="DocumentIterator.h" />
+    <ClInclude Include="Fnv1aHasher.h" />
     <ClInclude Include="HashIterator.h" />
     <ClInclude Include="BitWiseArray.h" />
     <ClInclude Include="BloomFilterServer.h" />
@@ -177,6 +178,7 @@
     <ClCompile Include="DataBaseHandler.cpp" />
     <ClCompile Include="Document.cpp" />
     <ClCompile Include="DocumentIterator.cpp" />
+    <ClCompile Include="Fnv1aHasher.cpp" />
     <ClCompile Include="PDC3_BloomFilter.cpp" />
     <ClCompile Include="HashIterator.cpp" />
     <ClCompile Include="MurmurHasher.cpp" />
