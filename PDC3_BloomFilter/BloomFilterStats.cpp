@@ -4,6 +4,14 @@
 bool BloomFilterStats::instanceFlag = false;
 BloomFilterStats* BloomFilterStats::bloomFilterStat = nullptr;
 
+BloomFilterStats::BloomFilterStats()
+{
+	bloom_filter_sizeInBit = 0;
+	bloom_filter_hashFunctionsNumber = 0;
+	bloom_filter_hashFunctionId = 0;
+
+	number_of_one_in_filter = 0;
+}
 BloomFilterStats * BloomFilterStats::getInstance()
 {
 	if (!instanceFlag)
@@ -33,13 +41,19 @@ void BloomFilterStats::set_bloom_filter_hashFunctionId(unsigned int bloom_filter
 	BloomFilterStats::bloom_filter_hashFunctionId = bloom_filter_hashFunctionId;
 }
 
+void BloomFilterStats::increment_filing_rate(unsigned int newInsertedOneNumber)
+{
+	number_of_one_in_filter += newInsertedOneNumber;
+}
+
 string BloomFilterStats::getStringOfAllStats()
 {
 	string returned="";
-	returned += "Stats : ";
+	returned += "Stats : \n";
 	returned += "\t Size of bloom filter : " + to_string(bloom_filter_sizeInBit) + "\n";
 	returned += "\t Number of hash function of bloom filter : " + to_string(bloom_filter_hashFunctionsNumber) + "\n";
 	returned += "\t Type of hash function : " + to_string(bloom_filter_hashFunctionId) + "\n";
+	returned += "\t Bloom Filter Filing rate : " + to_string(100*((1.0*number_of_one_in_filter)/ bloom_filter_sizeInBit)) + "%\n";
 	return returned;
 }
 
