@@ -127,7 +127,7 @@
   <Class Name="IHasher">
     <Position X="12.25" Y="8" Width="1.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEEAAAAAA=</HashCode>
       <FileName>IHasher.h</FileName>
     </TypeIdentifier>
   </Class>
@@ -156,7 +156,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="DocumentIterator">
-    <Position X="9.25" Y="8.75" Width="1.75" />
+    <Position X="8.75" Y="8.75" Width="1.75" />
     <Members>
       <Method Name="~DocumentIterator" Hidden="true" />
       <Method Name="DocumentIterator" Hidden="true" />
@@ -168,7 +168,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="HashIterator">
-    <Position X="12.25" Y="10.75" Width="1.5" />
+    <Position X="12.25" Y="11.5" Width="1.5" />
     <Members>
       <Method Name="HashIterator" Hidden="true" />
     </Members>
@@ -189,10 +189,41 @@
     </TypeIdentifier>
   </Class>
   <Class Name="MurmurHasher" Collapsed="true">
-    <Position X="12.25" Y="9.75" Width="1.5" />
+    <Position X="10.75" Y="10" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAABAAAgAAABAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <HashCode>AgAAAAAAAABAAAgAAABAAAAAAAAAAAAAAAAEEAAAAAA=</HashCode>
       <FileName>MurmurHasher.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Fnv1aHasher" Collapsed="true">
+    <Position X="12.5" Y="10" Width="1.5" />
+    <InheritanceLine Type="IHasher">
+      <InheritanceModifierLabel ManuallyPlaced="true">
+        <Position X="-0.573" Y="0.06" />
+      </InheritanceModifierLabel>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAgAAAAAAAgAAAEECAAAAA=</HashCode>
+      <FileName>Fnv1aHasher.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BloomFilterStats">
+    <Position X="3" Y="6" Width="3.25" />
+    <Members>
+      <Method Name="~BloomFilterStats" Hidden="true" />
+      <Field Name="bloomFilterStat" Hidden="true" />
+      <Method Name="BloomFilterStats" Hidden="true" />
+      <Field Name="instanceFlag" Hidden="true" />
+      <Method Name="set_bloom_filter_hashFunctionName" Hidden="true" />
+      <Method Name="set_bloom_filter_hashFunctionsNumber" Hidden="true" />
+      <Method Name="set_bloom_filter_sizeInBit" Hidden="true" />
+    </Members>
+    <Compartments>
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAABAAAQAARAAAAAIAAAiBAAAAAAQAAAAAQCSAAAE=</HashCode>
+      <FileName>BloomFilterStats.h</FileName>
     </TypeIdentifier>
   </Class>
   <Struct Name="DataBaseConfiguration">
