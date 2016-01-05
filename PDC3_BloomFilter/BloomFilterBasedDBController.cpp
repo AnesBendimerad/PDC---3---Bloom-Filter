@@ -3,11 +3,22 @@
 #include "DataBaseHandler.h"
 #include "MurmurHasher.h"
 #include "BloomFilterStats.h"
+#include "BloomFilterUtilities.h"
 
 BloomFilterBasedDBController::BloomFilterBasedDBController(DataBaseConfiguration dataBaseConfiguration, uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
 {
 	this->dbHandler = new DataBaseHandler(dataBaseConfiguration);
 	if (bloomFilterHashFunction == nullptr) bloomFilterHashFunction = new MurmurHasher();
+	this->bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
+}
+
+BloomFilterBasedDBController::BloomFilterBasedDBController(DataBaseConfiguration dataBaseConfiguration, double bloomFilterMaximalFPRate, IHasher * bloomFilterHashFunction)
+{
+	this->dbHandler = new DataBaseHandler(dataBaseConfiguration);
+	if (bloomFilterHashFunction == nullptr) bloomFilterHashFunction = new MurmurHasher();
+	unsigned int dataBaseSize = this->dbHandler->getDataBaseSize();
+	unsigned int bloomFilterSizeInBit = getPrimalOptimalSizeForMaximalFPRate(bloomFilterMaximalFPRate,dataBaseSize);
+	unsigned int bloomFilterHashFunctionsNumber = getOptimalHashFunctionNumberForMaximalFPRateAndSize(bloomFilterMaximalFPRate, dataBaseSize, bloomFilterSizeInBit);
 	this->bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
 }
 
@@ -30,6 +41,17 @@ void BloomFilterBasedDBController::reinitBloomFilter(uint32_t bloomFilterSizeInB
 {
 	delete this->bloomFilter;
 	if (bloomFilterHashFunction == nullptr) bloomFilterHashFunction = new MurmurHasher();
+	this->bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
+	this->initBloomFilter();
+}
+
+void BloomFilterBasedDBController::reinitBloomFilter(double bloomFilterMaximalFPRate, IHasher * bloomFilterHashFunction)
+{
+	delete this->bloomFilter;
+	if (bloomFilterHashFunction == nullptr) bloomFilterHashFunction = new MurmurHasher();
+	unsigned int dataBaseSize = this->dbHandler->getDataBaseSize();
+	unsigned int bloomFilterSizeInBit = getPrimalOptimalSizeForMaximalFPRate(bloomFilterMaximalFPRate, dataBaseSize);
+	unsigned int bloomFilterHashFunctionsNumber = getOptimalHashFunctionNumberForMaximalFPRateAndSize(bloomFilterMaximalFPRate, dataBaseSize, bloomFilterSizeInBit);
 	this->bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
 	this->initBloomFilter();
 }

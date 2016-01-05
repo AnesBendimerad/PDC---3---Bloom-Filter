@@ -7,7 +7,7 @@
 unsigned int getPrimalOptimalSizeForMaximalFPRate(double maximalFPRate, unsigned int databaseSize)
 {
 	if (maximalFPRate > 1 || maximalFPRate < 0) maximalFPRate = 1;
-	return getUpperPrimeNumber(ceill((databaseSize*log(1/maximalFPRate)) / (log(maximalFPRate)*log(maximalFPRate))));
+	return getUpperPrimeNumber(ceill((databaseSize*log(1/maximalFPRate)) / (log(2)*log(2))));
 }
 
 unsigned int getOptimalHashFunctionNumberForMaximalFPRateAndSize(double maximalFPRate, unsigned int databaseSize, unsigned int bloomFilterSize)

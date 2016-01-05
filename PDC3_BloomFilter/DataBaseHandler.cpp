@@ -98,6 +98,14 @@ DocumentIterator * DataBaseHandler::getDocumentIterator(string countryCode)
 	}
 }
 
+unsigned int DataBaseHandler::getDataBaseSize()
+{
+	DocumentIterator* allDocumentIterator = this->getDocumentIterator();
+	unsigned int dataBase_size = 0;
+	while (Document* d = allDocumentIterator->getNextDocument()) dataBase_size ++;
+	return dataBase_size;
+}
+
 DataBaseHandler::~DataBaseHandler()
 {
 	cass_future_free(connect_future);

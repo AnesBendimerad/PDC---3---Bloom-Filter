@@ -17,5 +17,6 @@ public:
 	Document * getDocumentByNumber(string documentNumber);
 	bool addDocument(Document * document);
 	DocumentIterator * getDocumentIterator(string countryCode = "");
+	unsigned int getDataBaseSize();
 	~DataBaseHandler();
 };

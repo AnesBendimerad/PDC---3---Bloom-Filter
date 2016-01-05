@@ -37,9 +37,15 @@ string BloomFilterServer::reinit(uint32_t bloomFilterSizeInBit, unsigned int blo
 
 	this->bloomFilterBasedDBController->reinitBloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
 	std::cout << "Reinitilized the Bloom Filter" << endl;
-	std::cout << "------------------------------------------" << endl;
 	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
-	std::cout << bloomFilterStats->getStringOfAllStats() << endl << "--------------------------------------------" << endl;
+	return bloomFilterStats->getStringOfAllStats();
+}
+
+string BloomFilterServer::reinit(double bloomFilterMaximalFPRate, IHasher * bloomFilterHashFunction)
+{
+	this->bloomFilterBasedDBController->reinitBloomFilter(bloomFilterMaximalFPRate, bloomFilterHashFunction);
+	std::cout << "Reinitilized the Bloom Filter" << endl;
+	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
 	return bloomFilterStats->getStringOfAllStats();
 }
 	
@@ -97,7 +103,7 @@ string BloomFilterServer::executeRequest(string query)
 		} 
 		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0)
 		{
-			int hashFunctionId = atoi(tokens[3].c_str());
+			int hashFunctionId = atoi(tokens[tokens.size()-1].c_str());
 			IHasher * hasher = nullptr;
 			if (hashFunctionId == MURMUR_HASHER) {
 				hasher = new MurmurHasher();
@@ -107,7 +113,13 @@ string BloomFilterServer::executeRequest(string query)
 			}
 			else hasher = new MurmurHasher();
 
-			response=this->reinit(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()), hasher);
+			if (tokens.size()==4) {
+				response=this->reinit(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()), hasher);
+			}
+			else
+			{
+				response = this->reinit(atof(tokens[1].c_str()), hasher);
+			}
 		}
 		else if (strcmp(tokens[0].c_str(), TEST_COMMAND) == 0)
 		{
@@ -173,7 +185,7 @@ vector<string> BloomFilterServer::getCommandArgument(string query)
 		{
 			return tokens;
 		}
-		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0 && tokens.size() == 4)
+		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0 && (tokens.size() == 4 || tokens.size() == 3))
 		{
 			return tokens;
 		}

@@ -12,11 +12,13 @@ private:
 	BloomFilter * bloomFilter;
 public:
 	BloomFilterBasedDBController(DataBaseConfiguration dataBaseConfiguration, uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction=nullptr);
-	
+	BloomFilterBasedDBController(DataBaseConfiguration dataBaseConfiguration, double bloomFilterMaximalFPRate, IHasher * bloomFilterHashFunction = nullptr);
+
 	DataBaseHandler * getDataBaseHandler();
 
 	void initBloomFilter();
 	void reinitBloomFilter(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction = nullptr);
+	void reinitBloomFilter(double bloomFilterMaximalFPRate, IHasher * bloomFilterHashFunction = nullptr);
 	
 	bool doesDocumentNumberExist(string documentNumber, unsigned int verificationType = BLOOM_AND_DB_VERIFICATION);
 	Document* getDocument(string documentNumber);
