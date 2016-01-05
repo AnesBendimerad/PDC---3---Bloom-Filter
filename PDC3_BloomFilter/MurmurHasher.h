@@ -7,6 +7,7 @@ class MurmurHasher : public IHasher
 public :
 	MurmurHasher();
 	HashIterator* getHashIterator(string key);
+	int getId();
 	~MurmurHasher();
 
 private :

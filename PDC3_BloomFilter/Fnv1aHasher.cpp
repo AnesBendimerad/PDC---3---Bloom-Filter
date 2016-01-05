@@ -13,6 +13,11 @@ uint32_t Fnv1aHasher::fnv1aString(const std::string text, uint32_t hash)
 	return hash;
 }
 
+int Fnv1aHasher::getId()
+{
+	return FNV1A_HASHER;
+}
+
 Fnv1aHasher::Fnv1aHasher()
 {
 }

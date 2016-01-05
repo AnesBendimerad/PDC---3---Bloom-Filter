@@ -15,6 +15,11 @@ HashIterator* MurmurHasher::getHashIterator(string key)
 	return new HashIterator(hashValue_1, hashValue_2);
 }
 
+int MurmurHasher::getId()
+{
+	return MURMUR_HASHER;
+}
+
 MurmurHasher::~MurmurHasher()
 {
 }
