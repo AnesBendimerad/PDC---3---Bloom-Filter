@@ -8,6 +8,7 @@
 #include "DataBaseGenerator.h"
 #include "RandomAdditionalOperations.h"
 #include "TestFileGenerator.h"
+#include "IHasher.h"
 #include "MurmurHasher.h"
 #include "Fnv1aHasher.h"
 using namespace std;
@@ -20,9 +21,6 @@ using namespace std;
 #define CONFIG_BF_HASHNUMBER		"bf.hashFunctionNumber"
 #define CONFIG_BF_HASH_TYPE			"bf.hashType"
 #define CONFIG_DBSIZE				"dbSize"
-
-#define VALUE_MURMUR_HASH			"murmur"
-#define VALUE_FNV1A_HASH			"fnv1a"
 
 #define COMMAND_LAUNCH_SERVER		"launchServer"
 #define COMMAND_GENERATE_DB			"generateDB"
@@ -107,15 +105,6 @@ bool launchServerCommand(int argc, char** argv)
 	}
 
 	if (!error) {
-		cout << "Configuration of the bloom filter : " << endl;
-		cout << "\t" << CONFIG_SERVER_PORT << " : " << to_string(port) << endl;
-		cout << "\t" << CONFIG_DB_CONTACTPOINTS << " : " << config.contactPoints << endl;
-		cout << "\t" << CONFIG_DB_KEYSPACE << " : " << config.keySpace << endl;
-		cout << "\t" << CONFIG_DB_TABLE << " : " << config.table << endl;
-		cout << "\t" << CONFIG_BF_SIZE << " : " << bloomSizeInBit << endl;
-		cout << "\t" << CONFIG_BF_HASH_TYPE << " : " << hashFunctionId << endl;
-		cout << "\t" << CONFIG_BF_HASHNUMBER << " : " << bloomHashNumber << endl;
-		
 		IHasher * hasher=nullptr;
 		if (hashFunctionId == MURMUR_HASHER) {
 			hasher = new MurmurHasher();
@@ -127,8 +116,18 @@ bool launchServerCommand(int argc, char** argv)
 		BloomFilterBasedDBController* bloomFilterBasedDBController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber, hasher);
 		BloomFilterServer bloomFilterServer(port, bloomFilterBasedDBController);
 
+		cout << "Configuration of the bloom filter : " << endl;
+		cout << "\t" << CONFIG_SERVER_PORT << " : " << to_string(port) << endl;
+		cout << "\t" << CONFIG_DB_CONTACTPOINTS << " : " << config.contactPoints << endl;
+		cout << "\t" << CONFIG_DB_KEYSPACE << " : " << config.keySpace << endl;
+		cout << "\t" << CONFIG_DB_TABLE << " : " << config.table << endl;
+		cout << "\t" << CONFIG_BF_SIZE << " : " << bloomSizeInBit << endl;
+		cout << "\t" << CONFIG_BF_HASH_TYPE << " : " << hasher->getName() << endl;
+		cout << "\t" << CONFIG_BF_HASHNUMBER << " : " << bloomHashNumber << endl;
+
 		cout << "--------------------------------------------" << endl;
-		cout << "Bloom server launched" << endl;
+		cout << "Constructing the Bloom Filter ..." << endl;
+		cout << "--------------------------------------------" << endl;
 
 		bloomFilterServer.start();
 	}
@@ -210,7 +209,6 @@ bool generateDBCommand(int argc, char** argv)
 int main(int argc, char** argv) {
 	cout << "--------------------------------------------" << endl;
 	bool error = (argc < 2);
-	cout << argc << endl;
 	if (!error)
 	{
 		if (strcmp(argv[1], COMMAND_LAUNCH_SERVER) == 0 && argc== LAUNCH_ARGUMENTS_NUMBER) {

@@ -8,6 +8,7 @@ public :
 	MurmurHasher();
 	HashIterator* getHashIterator(string key);
 	int getId();
+	string getName();
 	~MurmurHasher();
 
 private :

@@ -9,6 +9,7 @@ class Fnv1aHasher : public IHasher {
 private :
 	uint32_t fnv1aString(const std::string text, uint32_t hash = Seed);
 	int getId();
+	string getName();
 public :
 	Fnv1aHasher();
 	HashIterator* getHashIterator(string key);

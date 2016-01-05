@@ -18,6 +18,11 @@ int Fnv1aHasher::getId()
 	return FNV1A_HASHER;
 }
 
+string Fnv1aHasher::getName()
+{
+	return VALUE_FNV1A_HASH;
+}
+
 Fnv1aHasher::Fnv1aHasher()
 {
 }

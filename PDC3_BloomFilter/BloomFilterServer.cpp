@@ -19,12 +19,12 @@ void BloomFilterServer::init()
 	bloomFilterBasedDBController->initBloomFilter();
 	chrono::high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now();
 	unsigned long long duration = (t2 - t1).count() / 1000000;
-	
+
 	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
-	std::cout << bloomFilterStats->getStringOfAllStats() << endl << "------------------------------------------" << endl;
+	std::cout << bloomFilterStats->getStringOfAllStats() << endl << "--------------------------------------------" << endl;
 	
 	string informations = to_string(duration) + " ms";
-	std::cout << "Initilized the Bloom Filter in " << informations << endl << "------------------------------------------" << endl;
+	std::cout << "Initilization the Bloom Filter in " << informations << endl << "--------------------------------------------" << endl;
 }
 
 void BloomFilterServer::reinit(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)

@@ -20,6 +20,11 @@ int MurmurHasher::getId()
 	return MURMUR_HASHER;
 }
 
+string MurmurHasher::getName()
+{
+	return VALUE_MURMUR_HASH;
+}
+
 MurmurHasher::~MurmurHasher()
 {
 }
