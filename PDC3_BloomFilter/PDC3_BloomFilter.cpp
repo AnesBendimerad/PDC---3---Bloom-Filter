@@ -8,6 +8,8 @@
 #include "DataBaseGenerator.h"
 #include "RandomAdditionalOperations.h"
 #include "TestFileGenerator.h"
+#include "MurmurHasher.h"
+#include "Fnv1aHasher.h"
 using namespace std;
 
 #define CONFIG_SERVER_PORT			"port"
@@ -16,8 +18,11 @@ using namespace std;
 #define CONFIG_DB_TABLE				"db.table" 
 #define CONFIG_BF_SIZE				"bf.sizeInBit" 
 #define CONFIG_BF_HASHNUMBER		"bf.hashFunctionNumber"
-
+#define CONFIG_BF_HASH_TYPE			"bf.hashType"
 #define CONFIG_DBSIZE		"dbSize"
+
+#define VALUE_MURMUR_HASH "murmur"
+#define VALUE_FNV1A_HASH "fnv1a"
 
 #define COMMAND_LAUNCH_SERVER		"launchServer"
 #define COMMAND_GENERATE_DB			"generateDB"
@@ -31,7 +36,7 @@ bool launchServerCommand(int argc, char** argv)
 	config.table = "";
 	uint32_t bloomSizeInBit = 0;
 	uint32_t bloomHashNumber = 0;
-
+	int hashFunctionId = 0;
 	bool error = (argc != 8);
 	if (!error)
 	{
@@ -83,6 +88,17 @@ bool launchServerCommand(int argc, char** argv)
 					else error = true;
 					if (bloomHashNumber == 0) error = true;
 				}
+				else if (strcmp(argumentName.c_str(), CONFIG_BF_HASH_TYPE) == 0) {
+					if (strcmp(argumentValue.c_str(), VALUE_MURMUR_HASH) == 0) {
+						hashFunctionId = MURMUR_HASHER;
+					}
+					else if (strcmp(argumentValue.c_str(), VALUE_FNV1A_HASH) == 0) {
+						hashFunctionId = FNV1A_HASHER;
+					}
+					else {
+						error = true;
+					}
+				}
 				else error = true;
 			}
 			else error = true;
@@ -97,9 +113,18 @@ bool launchServerCommand(int argc, char** argv)
 		cout << "\t" << CONFIG_DB_KEYSPACE << " : " << config.keySpace << endl;
 		cout << "\t" << CONFIG_DB_TABLE << " : " << config.table << endl;
 		cout << "\t" << CONFIG_BF_SIZE << " : " << bloomSizeInBit << endl;
+		cout << "\t" << CONFIG_BF_HASH_TYPE << " : " << hashFunctionId << endl;
 		cout << "\t" << CONFIG_BF_HASHNUMBER << " : " << bloomHashNumber << endl;
+		
+		IHasher * hasher=nullptr;
+		if (hashFunctionId == MURMUR_HASHER) {
+			hasher = new MurmurHasher();
+		}
+		else if (hashFunctionId==FNV1A_HASHER){
+			hasher = new Fnv1aHasher();
+		}
 
-		BloomFilterBasedDBController* bloomFilterBasedDBController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber, nullptr);
+		BloomFilterBasedDBController* bloomFilterBasedDBController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber, hasher);
 		BloomFilterServer bloomFilterServer(port, bloomFilterBasedDBController);
 
 		cout << "--------------------------------------------" << endl;
