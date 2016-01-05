@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+#include "BloomFilterStats.h"
 using namespace std;
 
 BloomFilterServer::BloomFilterServer(unsigned int port, BloomFilterBasedDBController* bloomFilterBasedDBController) : Server()
@@ -18,8 +19,11 @@ void BloomFilterServer::init()
 	bloomFilterBasedDBController->initBloomFilter();
 	chrono::high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now();
 	unsigned long long duration = (t2 - t1).count() / 1000000;
+	
+	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
+	cout << "Initial stats : \n " << bloomFilterStats->getStringOfAllStats() << endl << "------------------------------------------" << endl;
+	
 	string informations = to_string(duration) + " ms";
-
 	cout << "Initilized the Bloom Filter in " << informations << endl << "------------------------------------------" << endl;
 }
 

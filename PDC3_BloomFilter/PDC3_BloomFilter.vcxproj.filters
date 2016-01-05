@@ -102,6 +102,9 @@
     <ClInclude Include="RandomAdditionalOperations.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
+    <ClInclude Include="BloomFilterStats.h">
+      <Filter>Header Files\controllers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -154,6 +157,9 @@
     </ClCompile>
     <ClCompile Include="RandomAdditionalOperations.cpp">
       <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="BloomFilterStats.cpp">
+      <Filter>Source Files\controllers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
