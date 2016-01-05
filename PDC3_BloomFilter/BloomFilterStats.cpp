@@ -6,6 +6,8 @@ BloomFilterStats* BloomFilterStats::bloomFilterStat = nullptr;
 
 BloomFilterStats::BloomFilterStats()
 {
+	dataBase_size = 0;
+
 	bloom_filter_sizeInBit = 0;
 	bloom_filter_hashFunctionsNumber = 0;
 	bloom_filter_hashFunctionName = "";
@@ -52,10 +54,16 @@ void BloomFilterStats::increment_number_of_one_in_filter(unsigned int newInserte
 	number_of_one_in_filter += newInsertedOneNumber;
 }
 
+void BloomFilterStats::set_dataBase_size(unsigned int dataBase_size)
+{
+	BloomFilterStats::dataBase_size = dataBase_size;
+}
+
 string BloomFilterStats::getStringOfAllStats()
 {
 	string returned="";
 	returned += "Stats : \n";
+	returned += "\t Database size : " + to_string(dataBase_size) + "\n";
 	returned += "\t Size of bloom filter : " + to_string(bloom_filter_sizeInBit) + "\n";
 	returned += "\t Number of hash function of bloom filter : " + to_string(bloom_filter_hashFunctionsNumber) + "\n";
 	returned += "\t Type of hash function : " + bloom_filter_hashFunctionName + "\n";
