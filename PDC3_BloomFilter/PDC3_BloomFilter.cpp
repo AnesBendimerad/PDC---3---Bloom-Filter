@@ -11,7 +11,7 @@
 #include "MurmurHasher.h"
 #include "Fnv1aHasher.h"
 using namespace std;
-
+#define LAUNCH_ARGUMENTS_NUMBER		9
 #define CONFIG_SERVER_PORT			"port"
 #define CONFIG_DB_CONTACTPOINTS		"db.contactPoints" 
 #define CONFIG_DB_KEYSPACE			"db.keySpace" 
@@ -37,7 +37,7 @@ bool launchServerCommand(int argc, char** argv)
 	uint32_t bloomSizeInBit = 0;
 	uint32_t bloomHashNumber = 0;
 	int hashFunctionId = 0;
-	bool error = (argc != 8);
+	bool error = (argc != LAUNCH_ARGUMENTS_NUMBER);
 	if (!error)
 	{
 		string argument;
@@ -210,9 +210,10 @@ bool generateDBCommand(int argc, char** argv)
 int main(int argc, char** argv) {
 	cout << "--------------------------------------------" << endl;
 	bool error = (argc < 2);
+	cout << argc << endl;
 	if (!error)
 	{
-		if (strcmp(argv[1], COMMAND_LAUNCH_SERVER) == 0 && argc==8) {
+		if (strcmp(argv[1], COMMAND_LAUNCH_SERVER) == 0 && argc== LAUNCH_ARGUMENTS_NUMBER) {
 			//commande 1 - <progName> launchServer port=2014 db.contactPoints=127.0.0.1 db.keySpace=documentDataBase db.table=documentTable bf.sizeInBit=10009 bf.hashFunctionNumber=5
 			error=!launchServerCommand(argc, argv);
 		}
