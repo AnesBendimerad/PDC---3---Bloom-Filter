@@ -150,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="BloomFilter.h" />
     <ClInclude Include="BloomFilterBasedDBController.h" />
+    <ClInclude Include="BloomFilterStats.h" />
     <ClInclude Include="CassandraAdditionalFunctions.h" />
     <ClInclude Include="DataBaseConfiguration.h" />
     <ClInclude Include="DataBaseGenerator.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="RandomAdditionalOperations.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="BloomFilterServer.cpp" />
+    <ClCompile Include="BloomFilterStats.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

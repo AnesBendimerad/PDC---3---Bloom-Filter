@@ -1,12 +1,19 @@
 #include "stdafx.h"
 #include "BloomFilter.h"
 #include "prime.h"
+#include "BloomFilterStats.h"
 BloomFilter::BloomFilter(uint32_t sizeInBit, unsigned int hashFunctionsNumber, IHasher * hashFunction)
 {
 	sizeInBit = getLesserPrimeNumber(sizeInBit);
 	BloomFilter::bitWiseArray = new BitWiseArray(sizeInBit);
 	BloomFilter::hashFunctionsNumber = hashFunctionsNumber;
 	BloomFilter::hashFunction = hashFunction;
+
+	BloomFilterStats* bloomFilterStats = BloomFilterStats::getInstance();
+	
+	bloomFilterStats->set_bloom_filter_sizeInBit(sizeInBit);
+	bloomFilterStats->set_bloom_filter_hashFunctionsNumber(hashFunctionsNumber);
+	bloomFilterStats->set_bloom_filter_hashFunctionId(0); //TODO
 }
 
 void BloomFilter::addKey(string key)
