@@ -108,6 +108,9 @@
     <ClInclude Include="Fnv1aHasher.h">
       <Filter>Header Files\models</Filter>
     </ClInclude>
+    <ClInclude Include="BloomFilterUtilities.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -166,6 +169,9 @@
     </ClCompile>
     <ClCompile Include="Fnv1aHasher.cpp">
       <Filter>Source Files\models</Filter>
+    </ClCompile>
+    <ClCompile Include="BloomFilterUtilities.cpp">
+      <Filter>Source Files\utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

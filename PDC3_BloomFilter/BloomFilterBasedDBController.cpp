@@ -23,7 +23,7 @@ void BloomFilterBasedDBController::initBloomFilter()
 
 	BloomFilterStats* bloomFilterStats = BloomFilterStats::getInstance();
 	bloomFilterStats->set_dataBase_size(dataBase_size);
-
+	bloomFilterStats->set_bloom_filter_fp_rates();
 }
 
 void BloomFilterBasedDBController::reinitBloomFilter(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)

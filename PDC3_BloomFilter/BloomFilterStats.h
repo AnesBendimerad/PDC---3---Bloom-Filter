@@ -14,6 +14,11 @@ private:
 	string bloom_filter_hashFunctionName;
 
 	unsigned int number_of_one_in_filter;
+	
+	double bloom_filter_theorical_fp_rate;
+	double bloom_filter_fp_rate_with_filling_rate;
+
+	
 
 
 public:
@@ -25,6 +30,8 @@ public:
 	void set_number_of_one_in_filter(unsigned int numberOfOnes);
 	void increment_number_of_one_in_filter(unsigned int newInsertedOneNumber);
 
+	void set_bloom_filter_fp_rates();
+	
 	void set_dataBase_size(unsigned int dataBase_size);
 	string getStringOfAllStats();
 	~BloomFilterStats();

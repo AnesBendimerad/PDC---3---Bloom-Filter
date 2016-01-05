@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\cassandra_bib_32\include</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\cassandra_bib_32\lib</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);E:\cassandra_bib_32\include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;E:\cassandra_bib_32\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -161,6 +161,7 @@
     <ClInclude Include="HashIterator.h" />
     <ClInclude Include="BitWiseArray.h" />
     <ClInclude Include="BloomFilterServer.h" />
+    <ClInclude Include="BloomFilterUtilities.h" />
     <ClInclude Include="RandomAdditionalOperations.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="prime.h" />
@@ -188,6 +189,7 @@
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="BloomFilterServer.cpp" />
     <ClCompile Include="BloomFilterStats.cpp" />
+    <ClCompile Include="BloomFilterUtilities.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
