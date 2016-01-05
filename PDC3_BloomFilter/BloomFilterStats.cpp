@@ -36,9 +36,10 @@ void BloomFilterStats::set_bloom_filter_hashFunctionId(unsigned int bloom_filter
 string BloomFilterStats::getStringOfAllStats()
 {
 	string returned="";
-	returned += "size of bloom filter : " + to_string(bloom_filter_sizeInBit)+"\n";
-	returned += "nomber of hash function of bloom filter : " + to_string(bloom_filter_hashFunctionsNumber) + "\n";
-	returned += "type of hash function : " + to_string(bloom_filter_hashFunctionId) + "\n";
+	returned += "Stats : ";
+	returned += "\t Size of bloom filter : " + to_string(bloom_filter_sizeInBit) + "\n";
+	returned += "\t Number of hash function of bloom filter : " + to_string(bloom_filter_hashFunctionsNumber) + "\n";
+	returned += "\t Type of hash function : " + to_string(bloom_filter_hashFunctionId) + "\n";
 	return returned;
 }
 

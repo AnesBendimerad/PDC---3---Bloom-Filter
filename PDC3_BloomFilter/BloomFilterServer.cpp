@@ -21,7 +21,7 @@ void BloomFilterServer::init()
 	unsigned long long duration = (t2 - t1).count() / 1000000;
 	
 	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
-	cout << "Initial stats : \n " << bloomFilterStats->getStringOfAllStats() << endl << "------------------------------------------" << endl;
+	cout << bloomFilterStats->getStringOfAllStats() << endl << "------------------------------------------" << endl;
 	
 	string informations = to_string(duration) + " ms";
 	cout << "Initilized the Bloom Filter in " << informations << endl << "------------------------------------------" << endl;

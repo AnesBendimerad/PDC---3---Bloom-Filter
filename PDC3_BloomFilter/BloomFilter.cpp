@@ -13,7 +13,7 @@ BloomFilter::BloomFilter(uint32_t sizeInBit, unsigned int hashFunctionsNumber, I
 	
 	bloomFilterStats->set_bloom_filter_sizeInBit(sizeInBit);
 	bloomFilterStats->set_bloom_filter_hashFunctionsNumber(hashFunctionsNumber);
-	bloomFilterStats->set_bloom_filter_hashFunctionId(0); //TODO
+	bloomFilterStats->set_bloom_filter_hashFunctionId(hashFunction->getId());
 }
 
 void BloomFilter::addKey(string key)
