@@ -18,12 +18,18 @@ BloomFilter::BloomFilter(uint32_t sizeInBit, unsigned int hashFunctionsNumber, I
 
 void BloomFilter::addKey(string key)
 {
+	unsigned int newInsertedOneNumber = 0;
 	HashIterator* hashIterator = BloomFilter::hashFunction->getHashIterator(key);
 	for (unsigned int k = 0;k < hashFunctionsNumber;k++)
 	{
 		uint32_t index = hashIterator->getNextHash();
-		BloomFilter::bitWiseArray->set(index);
+		if (!BloomFilter::bitWiseArray->get(index)) {
+			BloomFilter::bitWiseArray->set(index);
+			newInsertedOneNumber += 1;
+		}
 	}
+	BloomFilterStats* bloomFilterStats = BloomFilterStats::getInstance();
+	bloomFilterStats->increment_filing_rate(newInsertedOneNumber);
 	delete hashIterator;
 }
 

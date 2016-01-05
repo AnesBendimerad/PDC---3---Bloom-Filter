@@ -5,11 +5,13 @@ class BloomFilterStats {
 private:
 	static bool instanceFlag;
 	static BloomFilterStats* bloomFilterStat;
-	BloomFilterStats() {};
+	BloomFilterStats();
 
 	unsigned int bloom_filter_sizeInBit;
 	unsigned int bloom_filter_hashFunctionsNumber;
 	unsigned int bloom_filter_hashFunctionId;
+
+	unsigned int number_of_one_in_filter;
 
 
 public:
@@ -17,6 +19,7 @@ public:
 	void set_bloom_filter_sizeInBit(unsigned int bloom_filter_sizeInBit);
 	void set_bloom_filter_hashFunctionsNumber(unsigned int bloom_filter_sizeInBit);
 	void set_bloom_filter_hashFunctionId(unsigned int bloom_filter_sizeInBit);
+	void increment_filing_rate(unsigned int newInsertedOneNumber);
 
 	string getStringOfAllStats();
 	~BloomFilterStats();
