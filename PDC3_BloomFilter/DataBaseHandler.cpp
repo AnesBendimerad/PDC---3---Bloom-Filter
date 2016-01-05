@@ -100,10 +100,10 @@ DocumentIterator * DataBaseHandler::getDocumentIterator(string countryCode)
 
 unsigned int DataBaseHandler::getDataBaseSize()
 {
-	DocumentIterator* allDocumentIterator = this->getDocumentIterator();
-	unsigned int dataBase_size = 0;
-	while (Document* d = allDocumentIterator->getNextDocument()) dataBase_size ++;
-	return dataBase_size;
+	DocumentIterator* allDocumentIterator=this->getDocumentIterator();
+	unsigned int returned = allDocumentIterator->getSize();
+	delete allDocumentIterator;
+	return returned;
 }
 
 DataBaseHandler::~DataBaseHandler()

@@ -25,16 +25,15 @@ BloomFilterBasedDBController::BloomFilterBasedDBController(DataBaseConfiguration
 void BloomFilterBasedDBController::initBloomFilter()
 {
 	DocumentIterator* allDocumentIterator = this->dbHandler->getDocumentIterator();
-	unsigned int dataBase_size = 0;
 	while (Document* d = allDocumentIterator->getNextDocument())
 	{
 		this->bloomFilter->addKey(d->documentNumber);
-		dataBase_size += 1;
 	}
 
 	BloomFilterStats* bloomFilterStats = BloomFilterStats::getInstance();
-	bloomFilterStats->set_dataBase_size(dataBase_size);
+	bloomFilterStats->set_dataBase_size(allDocumentIterator->getSize());
 	bloomFilterStats->set_bloom_filter_fp_rates();
+	delete allDocumentIterator;
 }
 
 void BloomFilterBasedDBController::reinitBloomFilter(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
