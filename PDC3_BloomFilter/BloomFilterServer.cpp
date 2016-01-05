@@ -21,10 +21,10 @@ void BloomFilterServer::init()
 	unsigned long long duration = (t2 - t1).count() / 1000000;
 	
 	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
-	cout << bloomFilterStats->getStringOfAllStats() << endl << "------------------------------------------" << endl;
+	std::cout << bloomFilterStats->getStringOfAllStats() << endl << "------------------------------------------" << endl;
 	
 	string informations = to_string(duration) + " ms";
-	cout << "Initilized the Bloom Filter in " << informations << endl << "------------------------------------------" << endl;
+	std::cout << "Initilized the Bloom Filter in " << informations << endl << "------------------------------------------" << endl;
 }
 
 void BloomFilterServer::reinit(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
@@ -33,10 +33,10 @@ void BloomFilterServer::reinit(uint32_t bloomFilterSizeInBit, unsigned int bloom
 	if (bloomFilterHashFunctionsNumber == 0) bloomFilterHashFunctionsNumber = 1;
 
 	this->bloomFilterBasedDBController->reinitBloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
-	cout << "Reinitilized the Bloom Filter" << endl;
-	cout << "\t" << "bloom filter size" << " : " << bloomFilterSizeInBit << endl;
-	cout << "\t" << "bloom filter hash function number" << " : " << bloomFilterHashFunctionsNumber << endl;
-	cout << "------------------------------------------" << endl;
+	std::cout << "Reinitilized the Bloom Filter" << endl;
+	std::cout << "\t" << "bloom filter size" << " : " << bloomFilterSizeInBit << endl;
+	std::cout << "\t" << "bloom filter hash function number" << " : " << bloomFilterHashFunctionsNumber << endl;
+	std::cout << "------------------------------------------" << endl;
 }
 
 string BloomFilterServer::executeRequest(string query)
@@ -48,7 +48,7 @@ string BloomFilterServer::executeRequest(string query)
 	string informations="";
 	string answer=""; //answer = <ok_or_ko> (<response>) (<informations>) <END/>
 	
-	cout << "exectuting "<< query << " ... " << endl;
+	std::cout << "exectuting "<< query << " ... " << endl;
 	
 	vector<string> tokens = this->getCommandArgument(query);
 	
@@ -59,7 +59,12 @@ string BloomFilterServer::executeRequest(string query)
 	}
 	else
 	{
-		if (strcmp(tokens[0].c_str(),GET_COMMAND)==0)
+		if (strcmp(tokens[0].c_str(), STATS_COMMAND) == 0)
+		{
+			BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
+			response = bloomFilterStats->getStringOfAllStats();
+		}
+		else if (strcmp(tokens[0].c_str(),GET_COMMAND)==0)
 		{
 			Document *document = bloomFilterBasedDBController->getDocument(tokens[1]);
 			response = documentToString(document);
@@ -125,8 +130,8 @@ string BloomFilterServer::executeRequest(string query)
 	informations+= "time : "+to_string(duration)+" ms";
 
 	answer = ok_or_ko + " (" + response + ")" + " (" + informations + ") "+ RESPONSE_END_TAG;
-	cout << "Answer sent : " << answer << endl;
-	cout << "--------------------------------" << endl;
+	std::cout << "Answer sent : " << answer << endl;
+	std::cout << "--------------------------------" << endl;
 	return answer;
 }
 
@@ -138,6 +143,10 @@ vector<string> BloomFilterServer::getCommandArgument(string query)
 	if (tokens.size() > 0)
 	{
 		if (strcmp(tokens[0].c_str(), STOP_COMMAND)==0 && tokens.size() == 1)
+		{
+			return tokens;
+		}
+		else if (strcmp(tokens[0].c_str(), STATS_COMMAND) == 0 && tokens.size() == 1)
 		{
 			return tokens;
 		}

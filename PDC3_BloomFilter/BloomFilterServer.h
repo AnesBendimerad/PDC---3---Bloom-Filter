@@ -13,6 +13,7 @@
 #define REINIT_COMMAND				"reinit" // reinit <bloom_filter_size> <hash_function_number>
 #define TEST_COMMAND				"test"   // test <test_file_size> <valid_document_pourcentage> [<verification_type>] [USE_LAST_IF_EXISTS]
 #define USE_LAST_IF_EXISTS			"USE_LAST_IF_EXISTS"
+#define STATS_COMMAND				"stats"  // stats // return statistic concerning the Bloom Filter
 #define RESPONSE_END_TAG			"<END/>"
 
 class BloomFilterServer : public Server

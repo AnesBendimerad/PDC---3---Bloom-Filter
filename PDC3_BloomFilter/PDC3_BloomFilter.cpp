@@ -19,10 +19,10 @@ using namespace std;
 #define CONFIG_BF_SIZE				"bf.sizeInBit" 
 #define CONFIG_BF_HASHNUMBER		"bf.hashFunctionNumber"
 #define CONFIG_BF_HASH_TYPE			"bf.hashType"
-#define CONFIG_DBSIZE		"dbSize"
+#define CONFIG_DBSIZE				"dbSize"
 
-#define VALUE_MURMUR_HASH "murmur"
-#define VALUE_FNV1A_HASH "fnv1a"
+#define VALUE_MURMUR_HASH			"murmur"
+#define VALUE_FNV1A_HASH			"fnv1a"
 
 #define COMMAND_LAUNCH_SERVER		"launchServer"
 #define COMMAND_GENERATE_DB			"generateDB"
