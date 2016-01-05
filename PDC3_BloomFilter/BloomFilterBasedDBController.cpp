@@ -2,6 +2,7 @@
 #include "BloomFilterBasedDBController.h"
 #include "DataBaseHandler.h"
 #include "MurmurHasher.h"
+#include "BloomFilterStats.h"
 
 BloomFilterBasedDBController::BloomFilterBasedDBController(DataBaseConfiguration dataBaseConfiguration, uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
 {
@@ -13,10 +14,16 @@ BloomFilterBasedDBController::BloomFilterBasedDBController(DataBaseConfiguration
 void BloomFilterBasedDBController::initBloomFilter()
 {
 	DocumentIterator* allDocumentIterator = this->dbHandler->getDocumentIterator();
+	unsigned int dataBase_size = 0;
 	while (Document* d = allDocumentIterator->getNextDocument())
 	{
 		this->bloomFilter->addKey(d->documentNumber);
+		dataBase_size += 1;
 	}
+
+	BloomFilterStats* bloomFilterStats = BloomFilterStats::getInstance();
+	bloomFilterStats->set_dataBase_size(dataBase_size);
+
 }
 
 void BloomFilterBasedDBController::reinitBloomFilter(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)

@@ -4,6 +4,9 @@
 #include <fstream>
 #include <chrono>
 #include "BloomFilterStats.h"
+#include "IHasher.h"
+#include "MurmurHasher.h"
+#include "Fnv1aHasher.h"
 using namespace std;
 
 BloomFilterServer::BloomFilterServer(unsigned int port, BloomFilterBasedDBController* bloomFilterBasedDBController) : Server()
@@ -27,17 +30,19 @@ void BloomFilterServer::init()
 	std::cout << "Initilization the Bloom Filter in " << informations << endl << "--------------------------------------------" << endl;
 }
 
-void BloomFilterServer::reinit(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
+string BloomFilterServer::reinit(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
 {
 	if (bloomFilterSizeInBit == 0) bloomFilterHashFunctionsNumber = 2;
 	if (bloomFilterHashFunctionsNumber == 0) bloomFilterHashFunctionsNumber = 1;
 
 	this->bloomFilterBasedDBController->reinitBloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
 	std::cout << "Reinitilized the Bloom Filter" << endl;
-	std::cout << "\t" << "bloom filter size" << " : " << bloomFilterSizeInBit << endl;
-	std::cout << "\t" << "bloom filter hash function number" << " : " << bloomFilterHashFunctionsNumber << endl;
 	std::cout << "------------------------------------------" << endl;
+	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
+	std::cout << bloomFilterStats->getStringOfAllStats() << endl << "--------------------------------------------" << endl;
+	return bloomFilterStats->getStringOfAllStats();
 }
+	
 
 string BloomFilterServer::executeRequest(string query)
 {
@@ -92,7 +97,17 @@ string BloomFilterServer::executeRequest(string query)
 		} 
 		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0)
 		{
-			this->reinit(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()));
+			int hashFunctionId = atoi(tokens[3].c_str());
+			IHasher * hasher = nullptr;
+			if (hashFunctionId == MURMUR_HASHER) {
+				hasher = new MurmurHasher();
+			}
+			else if (hashFunctionId == FNV1A_HASHER) {
+				hasher = new Fnv1aHasher();
+			}
+			else hasher = new MurmurHasher();
+
+			response=this->reinit(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()), hasher);
 		}
 		else if (strcmp(tokens[0].c_str(), TEST_COMMAND) == 0)
 		{
@@ -158,7 +173,7 @@ vector<string> BloomFilterServer::getCommandArgument(string query)
 		{
 			return tokens;
 		}
-		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0 && tokens.size() == 3)
+		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0 && tokens.size() == 4)
 		{
 			return tokens;
 		}

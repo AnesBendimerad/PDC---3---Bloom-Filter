@@ -8,6 +8,7 @@ private:
 	static BloomFilterStats* bloomFilterStat;
 	BloomFilterStats();
 
+	unsigned int dataBase_size;
 	unsigned int bloom_filter_sizeInBit;
 	unsigned int bloom_filter_hashFunctionsNumber;
 	string bloom_filter_hashFunctionName;
@@ -20,8 +21,11 @@ public:
 	void set_bloom_filter_sizeInBit(unsigned int bloom_filter_sizeInBit);
 	void set_bloom_filter_hashFunctionsNumber(unsigned int bloom_filter_hashFunctionsNumber);
 	void set_bloom_filter_hashFunctionName(string bloom_filter_hashFunctionName);
-	void increment_filing_rate(unsigned int newInsertedOneNumber);
 
+	void set_number_of_one_in_filter(unsigned int numberOfOnes);
+	void increment_number_of_one_in_filter(unsigned int newInsertedOneNumber);
+
+	void set_dataBase_size(unsigned int dataBase_size);
 	string getStringOfAllStats();
 	~BloomFilterStats();
 	

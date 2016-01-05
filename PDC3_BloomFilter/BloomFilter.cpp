@@ -14,6 +14,7 @@ BloomFilter::BloomFilter(uint32_t sizeInBit, unsigned int hashFunctionsNumber, I
 	bloomFilterStats->set_bloom_filter_sizeInBit(sizeInBit);
 	bloomFilterStats->set_bloom_filter_hashFunctionsNumber(hashFunctionsNumber);
 	bloomFilterStats->set_bloom_filter_hashFunctionName(hashFunction->getName());
+	bloomFilterStats->set_number_of_one_in_filter(0);
 }
 
 void BloomFilter::addKey(string key)
@@ -29,7 +30,7 @@ void BloomFilter::addKey(string key)
 		}
 	}
 	BloomFilterStats* bloomFilterStats = BloomFilterStats::getInstance();
-	bloomFilterStats->increment_filing_rate(newInsertedOneNumber);
+	bloomFilterStats->increment_number_of_one_in_filter(newInsertedOneNumber);
 	delete hashIterator;
 }
 
