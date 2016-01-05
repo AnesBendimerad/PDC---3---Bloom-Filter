@@ -102,11 +102,11 @@
     <ClInclude Include="RandomAdditionalOperations.h">
       <Filter>Header Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="Fnv1aHasher.h">
-      <Filter>Header Files\models</Filter>
-    </ClInclude>
     <ClInclude Include="BloomFilterStats.h">
       <Filter>Header Files\controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Fnv1aHasher.h">
+      <Filter>Header Files\models</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
