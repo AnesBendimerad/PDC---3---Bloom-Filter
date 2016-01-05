@@ -20,7 +20,9 @@ public:
 	void set_bloom_filter_sizeInBit(unsigned int bloom_filter_sizeInBit);
 	void set_bloom_filter_hashFunctionsNumber(unsigned int bloom_filter_hashFunctionsNumber);
 	void set_bloom_filter_hashFunctionName(string bloom_filter_hashFunctionName);
-	void increment_filing_rate(unsigned int newInsertedOneNumber);
+
+	void set_number_of_one_in_filter(unsigned int numberOfOnes);
+	void increment_number_of_one_in_filter(unsigned int newInsertedOneNumber);
 
 	string getStringOfAllStats();
 	~BloomFilterStats();

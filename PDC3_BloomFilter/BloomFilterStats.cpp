@@ -42,7 +42,12 @@ void BloomFilterStats::set_bloom_filter_hashFunctionName(string bloom_filter_has
 	BloomFilterStats::bloom_filter_hashFunctionName = bloom_filter_hashFunctionName;
 }
 
-void BloomFilterStats::increment_filing_rate(unsigned int newInsertedOneNumber)
+void BloomFilterStats::set_number_of_one_in_filter(unsigned int numberOfOnes)
+{
+	number_of_one_in_filter = numberOfOnes;
+}
+
+void BloomFilterStats::increment_number_of_one_in_filter(unsigned int newInsertedOneNumber)
 {
 	number_of_one_in_filter += newInsertedOneNumber;
 }

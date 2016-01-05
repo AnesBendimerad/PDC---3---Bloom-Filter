@@ -105,7 +105,8 @@ bool launchServerCommand(int argc, char** argv)
 		}
 		else if (hashFunctionId==FNV1A_HASHER){
 			hasher = new Fnv1aHasher();
-		}
+		} 
+		else hasher = new MurmurHasher();
 
 		BloomFilterBasedDBController* bloomFilterBasedDBController = new BloomFilterBasedDBController(config, bloomSizeInBit, bloomHashNumber, hasher);
 		BloomFilterServer bloomFilterServer(port, bloomFilterBasedDBController);
