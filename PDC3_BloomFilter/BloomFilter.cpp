@@ -1,10 +1,14 @@
 #include "stdafx.h"
 #include "BloomFilter.h"
-#include "prime.h"
 #include "BloomFilterStats.h"
+
+//#include "prime.h"
 BloomFilter::BloomFilter(uint32_t sizeInBit, unsigned int hashFunctionsNumber, IHasher * hashFunction)
 {
-	sizeInBit = getUpperPrimeNumber(sizeInBit);
+	//sizeInBit = getUpperPrimeNumber(sizeInBit);
+	if (sizeInBit == 0) sizeInBit = 1;
+	if (hashFunctionsNumber == 0) hashFunctionsNumber = 1;
+
 	BloomFilter::bitWiseArray = new BitWiseArray(sizeInBit);
 	BloomFilter::hashFunctionsNumber = hashFunctionsNumber;
 	BloomFilter::hashFunction = hashFunction;

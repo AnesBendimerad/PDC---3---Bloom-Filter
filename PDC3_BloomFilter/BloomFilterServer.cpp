@@ -32,9 +32,6 @@ void BloomFilterServer::init()
 
 string BloomFilterServer::reinit(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
 {
-	if (bloomFilterSizeInBit == 0) bloomFilterHashFunctionsNumber = 2;
-	if (bloomFilterHashFunctionsNumber == 0) bloomFilterHashFunctionsNumber = 1;
-
 	this->bloomFilterBasedDBController->reinitBloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
 	std::cout << "Reinitilized the Bloom Filter" << endl;
 	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
