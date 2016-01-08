@@ -209,7 +209,7 @@ bool generateDBCommand(int argc, char** argv)
 		DataBaseGenerator* DBG = new DataBaseGenerator(config, dbSize);
 		DBG->createAndGenerateDB();
 		std::cout << "Generation completed of " << dbSize << " non valid documents" << endl;
-		std::cout << "--------------------------------------------" << endl << endl;
+		std::cout << "---------------------------------------------" << endl << endl;
 	}
 	return !error;
 }
