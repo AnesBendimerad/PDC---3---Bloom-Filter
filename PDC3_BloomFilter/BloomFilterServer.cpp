@@ -7,6 +7,7 @@
 #include "IHasher.h"
 #include "MurmurHasher.h"
 #include "Fnv1aHasher.h"
+#include "ErreurManager.h"
 using namespace std;
 
 BloomFilterServer::BloomFilterServer(unsigned int port, BloomFilterBasedDBController* bloomFilterBasedDBController) : Server()
@@ -32,14 +33,17 @@ void BloomFilterServer::init()
 
 string BloomFilterServer::reinit(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
 {
-	if (bloomFilterSizeInBit == 0) bloomFilterHashFunctionsNumber = 2;
-	if (bloomFilterHashFunctionsNumber == 0) bloomFilterHashFunctionsNumber = 1;
-
 	this->bloomFilterBasedDBController->reinitBloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
 	std::cout << "Reinitilized the Bloom Filter" << endl;
-	std::cout << "------------------------------------------" << endl;
 	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
-	std::cout << bloomFilterStats->getStringOfAllStats() << endl << "--------------------------------------------" << endl;
+	return bloomFilterStats->getStringOfAllStats();
+}
+
+string BloomFilterServer::reinit(double bloomFilterMaximalFPRate, IHasher * bloomFilterHashFunction)
+{
+	this->bloomFilterBasedDBController->reinitBloomFilter(bloomFilterMaximalFPRate, bloomFilterHashFunction);
+	std::cout << "Reinitilized the Bloom Filter" << endl;
+	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
 	return bloomFilterStats->getStringOfAllStats();
 }
 	
@@ -49,18 +53,19 @@ string BloomFilterServer::executeRequest(string query)
 	chrono::high_resolution_clock::time_point t1 = chrono::high_resolution_clock::now();
 
 	string ok_or_ko = "OK";
-	string response="";
-	string informations="";
-	string answer=""; //answer = <ok_or_ko> (<response>) (<informations>) <END/>
-	
-	std::cout << "exectuting "<< query << " ... " << endl;
-	
+	string response = "";
+	string informations = "";
+	string answer = ""; //answer = <ok_or_ko> (<response>) (<informations>) <END/>
+
+	std::cout << "exectuting " << query << " ... " << endl;
+
 	vector<string> tokens = this->getCommandArgument(query);
-	
+	try {
 	if (tokens.size() == 0)
 	{
 		ok_or_ko = "KO";
-		response = "Incorrect syntax !";
+		response = ErreurManager::getError(INCORRECT_SYNTAX_ERROR);
+		throw new exception(response.c_str());
 	}
 	else
 	{
@@ -69,12 +74,12 @@ string BloomFilterServer::executeRequest(string query)
 			BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
 			response = bloomFilterStats->getStringOfAllStats();
 		}
-		else if (strcmp(tokens[0].c_str(),GET_COMMAND)==0)
+		else if (strcmp(tokens[0].c_str(), GET_COMMAND) == 0)
 		{
 			Document *document = bloomFilterBasedDBController->getDocument(tokens[1]);
 			response = documentToString(document);
 		}
-		else if (strcmp(tokens[0].c_str(), EXISTS_COMMAND)==0)
+		else if (strcmp(tokens[0].c_str(), EXISTS_COMMAND) == 0)
 		{
 			unsigned int option = BLOOM_AND_DB_VERIFICATION;
 			if (tokens.size() == 3)
@@ -94,10 +99,10 @@ string BloomFilterServer::executeRequest(string query)
 			{
 				response = "0";
 			}
-		} 
+		}
 		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0)
 		{
-			int hashFunctionId = atoi(tokens[3].c_str());
+			int hashFunctionId = atoi(tokens[tokens.size() - 1].c_str());
 			IHasher * hasher = nullptr;
 			if (hashFunctionId == MURMUR_HASHER) {
 				hasher = new MurmurHasher();
@@ -107,20 +112,27 @@ string BloomFilterServer::executeRequest(string query)
 			}
 			else hasher = new MurmurHasher();
 
-			response=this->reinit(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()), hasher);
+			if (tokens.size() == 4) {
+				response = this->reinit(atoi(tokens[1].c_str()), atoi(tokens[2].c_str()), hasher);
+			}
+			else
+			{
+				response = this->reinit(atof(tokens[1].c_str()), hasher);
+			}
 		}
 		else if (strcmp(tokens[0].c_str(), TEST_COMMAND) == 0)
 		{
 			// run test command
 			int testFileSize = atoi(tokens[1].c_str());
-			float validDocumentPourcentage= float(atof(tokens[2].c_str()));
+			float validDocumentPourcentage = float(atof(tokens[2].c_str()));
 			int verificationType = BLOOM_AND_DB_VERIFICATION;
 			if ((tokens.size() == 5) || (tokens.size() == 4 && (strcmp(tokens[3].c_str(), USE_LAST_IF_EXISTS) != 0))) {
 				verificationType = atoi(tokens[3].c_str());
 			}
 			if (tokens.size() == 5 && (tokens[4].compare(USE_LAST_IF_EXISTS) != 0)) {
 				ok_or_ko = "KO";
-				response = "Incorrect syntax !";
+				response = ErreurManager::getError(INCORRECT_SYNTAX_ERROR);
+				throw new exception(response.c_str());
 			}
 			if (lastTestFilePath.compare("") == 0 || tokens.size() == 3 || (tokens.size() == 4 && tokens[3].compare(USE_LAST_IF_EXISTS) != 0))
 			{
@@ -138,6 +150,11 @@ string BloomFilterServer::executeRequest(string query)
 			unsigned long long duration = (tb - ta).count() / 1000000;
 			informations += "test time : " + to_string(duration) + " ms, ";
 		}
+	}
+
+	}
+	catch (const exception * e) {
+		cerr << "An exception has occured: " << e->what() << endl;
 	}
 
 	chrono::high_resolution_clock::time_point t2 = chrono::high_resolution_clock::now();
@@ -173,7 +190,7 @@ vector<string> BloomFilterServer::getCommandArgument(string query)
 		{
 			return tokens;
 		}
-		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0 && tokens.size() == 4)
+		else if (strcmp(tokens[0].c_str(), REINIT_COMMAND) == 0 && (tokens.size() == 4 || tokens.size() == 3))
 		{
 			return tokens;
 		}

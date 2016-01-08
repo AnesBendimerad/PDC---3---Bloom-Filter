@@ -2,7 +2,7 @@
 #include <winsock2.h>
 #include <iostream>
 #include <string>
-
+#include "ErreurManager.h"
 using namespace std;
 
 #define STOP_COMMAND "stop"

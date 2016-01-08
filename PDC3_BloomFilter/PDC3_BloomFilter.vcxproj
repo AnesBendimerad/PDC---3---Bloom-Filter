@@ -71,8 +71,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\cassandra_bib_32\include</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\cassandra_bib_32\lib</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Cassandra_driver\include</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);$(NETFXKitsDir)Lib\um\x86;C:\Cassandra_driver\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
@@ -152,6 +152,7 @@
     <ClInclude Include="BloomFilterBasedDBController.h" />
     <ClInclude Include="BloomFilterStats.h" />
     <ClInclude Include="CassandraAdditionalFunctions.h" />
+    <ClInclude Include="D:\5IF\PDC3\PDC3_BloomFilter\ErreurManager.h" />
     <ClInclude Include="DataBaseConfiguration.h" />
     <ClInclude Include="DataBaseGenerator.h" />
     <ClInclude Include="DataBaseHandler.h" />
@@ -161,6 +162,7 @@
     <ClInclude Include="HashIterator.h" />
     <ClInclude Include="BitWiseArray.h" />
     <ClInclude Include="BloomFilterServer.h" />
+    <ClInclude Include="BloomFilterUtilities.h" />
     <ClInclude Include="RandomAdditionalOperations.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="prime.h" />
@@ -174,6 +176,7 @@
     <ClCompile Include="BloomFilter.cpp" />
     <ClCompile Include="BloomFilterBasedDBController.cpp" />
     <ClCompile Include="CassandraAdditionalFunctions.cpp" />
+    <ClCompile Include="D:\5IF\PDC3\PDC3_BloomFilter\ErreurManager.cpp" />
     <ClCompile Include="DataBaseGenerator.cpp" />
     <ClCompile Include="DataBaseHandler.cpp" />
     <ClCompile Include="Document.cpp" />
@@ -188,6 +191,7 @@
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="BloomFilterServer.cpp" />
     <ClCompile Include="BloomFilterStats.cpp" />
+    <ClCompile Include="BloomFilterUtilities.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

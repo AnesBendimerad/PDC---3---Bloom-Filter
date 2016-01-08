@@ -3,7 +3,7 @@
 
 
 Server::Server()
-{	
+{
 }
 
 
@@ -18,7 +18,7 @@ int Server::init_connection()
 	int err = WSAStartup(MAKEWORD(2, 2), &wsa);
 	if (err < 0)
 	{
-		perror("WSAStartup failed !");
+		throw new exception(ErreurManager::getError(WINSOCKDLL_INIT_ERROR).c_str());
 		exit(errno);
 	}
 	SOCKET sock = socket(AF_INET, SOCK_STREAM, 0);
@@ -26,7 +26,7 @@ int Server::init_connection()
 
 	if (sock == INVALID_SOCKET)
 	{
-		perror("socket()");
+		throw new exception(ErreurManager::getError(INVALID_SOCKET_ERROR).c_str());
 		exit(errno);
 	}
 
@@ -36,13 +36,13 @@ int Server::init_connection()
 
 	if (bind(sock, (SOCKADDR *)&sin, sizeof sin) == SOCKET_ERROR)
 	{
-		perror("bind()");
+		throw new exception(ErreurManager::getError(BIND_SOCKET_ERROR).c_str());
 		exit(errno);
 	}
 
 	if (listen(sock, 5) == SOCKET_ERROR)
 	{
-		perror("listen()");
+		throw new exception(ErreurManager::getError(LISTEN_SOCKET_ERROR).c_str());
 		exit(errno);
 	}
 	return sock;
@@ -57,8 +57,14 @@ void Server::stop()
 
 void Server::start()
 {
-	
-	this->sock = this->init_connection(); //initilize the connection using the port
+	try {
+		this->sock = this->init_connection(); //initialize the connection using the port
+	}
+	catch (const exception *e) {
+		cerr << "An exception has occured: " << e->what() << endl;
+		return;
+	}
+
 	char buffer[BUF_SIZE];
 	SOCKET csock;
 	SOCKADDR_IN csin = { 0 };
@@ -66,8 +72,6 @@ void Server::start()
 
 	init(); // to implement
 
-	//cout << "waiting client ... " << endl;
-	
 	cout << "listening to port " << port << " ... " << endl;
 	bool end = false;
 	string response = "";
@@ -76,7 +80,7 @@ void Server::start()
 		csock = accept(sock, (SOCKADDR *)&csin, &sinsize);
 		if (csock == SOCKET_ERROR)
 		{
-			perror("Acceptation phase failed");
+			throw new exception(ErreurManager::getError(ACCEPT_SOCKET_ERROR).c_str());
 		}
 		else {
 			if (read_client(csock, buffer) == -1)
@@ -117,5 +121,15 @@ int Server::read_client(SOCKET sock, char *buffer)
 
 void Server::write_client(SOCKET sock, const char *buffer)
 {
-	send(sock, buffer, strlen(buffer), 0);
+	int nDataToSend = strlen(buffer);
+	int nSentData = 0;
+	while (nDataToSend > nSentData) {
+		int nData = send(sock, buffer + nSentData, nDataToSend - nSentData, 0);
+		if (nData > 0)
+			nSentData += nData;
+		else {
+			//error
+			break;
+		}
+	}
 }
