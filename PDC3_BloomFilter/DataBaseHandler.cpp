@@ -17,8 +17,7 @@ const CassResult * DataBaseHandler::getResultOfQuery(string query)
 		const char* message;
 		size_t message_length;
 		cass_future_error_message(result_future, &message, &message_length);
-		fprintf(stderr, "Unable to run query: '%.*s'\n",
-			(int)message_length, message);
+		throw new exception(message);
 		cass_statement_free(statement);
 		return nullptr;
 	}
@@ -74,7 +73,7 @@ bool DataBaseHandler::addDocument(Document * document)
 		const char* message;
 		size_t message_length;
 		cass_future_error_message(future, &message, &message_length);
-		fprintf(stderr, "Error: %.*s\n", (int)message_length, message);
+		throw new exception(message);
 		returnedValue=false;
 	}
 	cass_future_free(future);

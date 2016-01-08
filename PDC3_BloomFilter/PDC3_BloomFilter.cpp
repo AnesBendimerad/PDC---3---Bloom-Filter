@@ -217,22 +217,27 @@ bool generateDBCommand(int argc, char** argv)
 int main(int argc, char** argv) {
 	std::cout << "--------------------------------------------" << endl;
 	bool error = (argc < 2);
-	if (!error)
-	{
-		if (strcmp(argv[1], COMMAND_LAUNCH_SERVER) == 0 && (argc== 8 || argc == 9)) {
-			//commande 1 - <progName> launchServer port=2014 db.contactPoints=127.0.0.1 db.keySpace=documentDataBase db.table=documentTable bf.sizeInBit=10009 bf.hashFunctionNumber=5
-			error=!launchServerCommand(argc, argv);
-		}
-		else if (strcmp(argv[1], COMMAND_GENERATE_DB) == 0 && argc == 6)
+	try {
+		if (!error)
 		{
-			//commande 2 - <progName> generateDB db.contactPoints=127.0.0.1 db.keySpace=documentDataBase db.table=documentTable dbSize=100000
-			error=!generateDBCommand(argc, argv);
+			if (strcmp(argv[1], COMMAND_LAUNCH_SERVER) == 0 && (argc == 8 || argc == 9)) {
+				//commande 1 - <progName> launchServer port=2014 db.contactPoints=127.0.0.1 db.keySpace=documentDataBase db.table=documentTable bf.sizeInBit=10009 bf.hashFunctionNumber=5
+				error = !launchServerCommand(argc, argv);
+			}
+			else if (strcmp(argv[1], COMMAND_GENERATE_DB) == 0 && argc == 6)
+			{
+				//commande 2 - <progName> generateDB db.contactPoints=127.0.0.1 db.keySpace=documentDataBase db.table=documentTable dbSize=100000
+				error = !generateDBCommand(argc, argv);
+			}
+			else error = true;
 		}
-		else error = true;
+		if (error)
+		{
+			std::cout << "Error " << ":" << " Please specify all the parameters correctly" << endl;
+		}
 	}
-	if (error)
-	{
-		std::cout << "Error " << ":" << " Please specify all the parameters correctly" << endl;
+	catch (const exception *e) {
+		cerr << "An exception has occured: " << e->what() << endl;
 	}
 	return 0; 
 }

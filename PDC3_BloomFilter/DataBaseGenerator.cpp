@@ -64,49 +64,38 @@ bool DataBaseGenerator::createDB(){
 	string createKeyspace = "create keyspace if not exists " + DataBaseGenerator::dataBaseConfiguration.keySpace + " with replication={'class':'SimpleStrategy', 'replication_factor':1};";
 	CassStatement* statement = cass_statement_new(createKeyspace.c_str(), 0);
 	CassFuture* result_future = cass_session_execute(session, statement);
-	try {
 		if (cass_future_error_code(result_future) != CASS_OK)
 		{
 			/* Handle error */
 			throw new exception(ErreurManager::getError(DB_KEYSPACE_ERROR).c_str());
-		}
-	}
-	catch (const exception *e) {
-		cerr << "An exception has occured: " << e->what() << endl;
-		return false;
-	}
+		    return false;
+	    }
 
 	/* Create Table*/
 	string createTable = "create table if not exists " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + " ( " + string(DOCUMENT_NUMBER) + " varchar primary key, " + string(DOCUMENT_TYPE) + " varchar, " + string(COUNTRY_CODE) + " varchar); ";
 	statement = cass_statement_new(createTable.c_str(), 0);
 	result_future = cass_session_execute(session, statement);
-	try {
+
 		if (cass_future_error_code(result_future) != CASS_OK)
 		{
 			/* Handle error */
 			throw new exception(ErreurManager::getError(DB_TABLE_ERROR).c_str());
-		}
-	}
-	catch (const exception *e) {
-		cerr << "An exception has occured: " << e->what() << endl;
 		return false;
-	}
+	   }
 
 	/* Create Index*/
 	string creatIndex = "create index if not exists on " + DataBaseGenerator::dataBaseConfiguration.keySpace + "." + DataBaseGenerator::dataBaseConfiguration.table + "(" + string(COUNTRY_CODE) + "); ";
 	statement = cass_statement_new(creatIndex.c_str(), 0);
 	result_future = cass_session_execute(session, statement);
-	try {
-		if (cass_future_error_code(result_future) != CASS_OK)
+
+	if (cass_future_error_code(result_future) != CASS_OK)
 		{
 			/* Handle error */
 			throw new exception(ErreurManager::getError(DB_INDEX_ERROR).c_str());
+			return false;
+
 		}
-	}
-	catch (const exception *e) {
-		cerr << "An exception has occured: " << e->what() << endl;
-		return false;
-	}
+	
 
 	/* Free database */
 	cass_statement_free(statement);
