@@ -121,5 +121,15 @@ int Server::read_client(SOCKET sock, char *buffer)
 
 void Server::write_client(SOCKET sock, const char *buffer)
 {
-	send(sock, buffer, strlen(buffer), 0);
+	int nDataToSend = strlen(buffer);
+	int nSentData = 0;
+	while (nDataToSend > nSentData) {
+		int nData = send(sock, buffer + nSentData, nDataToSend - nSentData, 0);
+		if (nData > 0)
+			nSentData += nData;
+		else {
+			//error
+			break;
+		}
+	}
 }

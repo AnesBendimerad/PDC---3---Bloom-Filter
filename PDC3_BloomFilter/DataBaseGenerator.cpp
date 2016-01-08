@@ -80,7 +80,7 @@ bool DataBaseGenerator::createDB(){
 		{
 			/* Handle error */
 			throw new exception(ErreurManager::getError(DB_TABLE_ERROR).c_str());
-		return false;
+		    return false;
 	   }
 
 	/* Create Index*/
