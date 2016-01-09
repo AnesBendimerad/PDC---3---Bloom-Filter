@@ -11,8 +11,10 @@
 #define EXISTS_COMMAND				"exists" // exists <document_number> [<verification_type>]
 #define GET_COMMAND					"get"	 // get    <document_number>
 #define REINIT_COMMAND				"reinit" // reinit <bloom_filter_size> <hash_function_number> <hash_function_id> or reinit <maxFPRate> <hash_function_id>
-#define TEST_COMMAND				"test"   // test <test_file_size> <valid_document_pourcentage> [<verification_type>] [USE_LAST_IF_EXISTS]
-#define USE_LAST_IF_EXISTS			"USE_LAST_IF_EXISTS"
+#define GENERATE_COMMAND			"generate" // generate <test_file_size> <valid_document_pourcentage> <test_file_path>
+#define TEST_COMMAND				"test"   // test <test_file_path> <verification_type>
+
+//#define USE_LAST_IF_EXISTS			"USE_LAST_IF_EXISTS"
 #define STATS_COMMAND				"stats"  // stats // return statistic concerning the Bloom Filter
 #define RESPONSE_END_TAG			"<END/>"
 
@@ -30,6 +32,6 @@ private :
 
 	vector<string> getCommandArgument(string query); // return empty vector if the command is not correct
 	BloomFilterBasedDBController* bloomFilterBasedDBController;
-	string lastTestFilePath;
+	//string lastTestFilePath;
 };
 

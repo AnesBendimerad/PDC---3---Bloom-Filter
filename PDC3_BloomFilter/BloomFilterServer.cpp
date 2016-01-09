@@ -14,7 +14,6 @@ BloomFilterServer::BloomFilterServer(unsigned int port, BloomFilterBasedDBContro
 {
 	this->port=port;
 	this->bloomFilterBasedDBController = bloomFilterBasedDBController;
-	lastTestFilePath = "";
 }
 
 void BloomFilterServer::init()
@@ -120,36 +119,42 @@ string BloomFilterServer::executeRequest(string query)
 				response = this->reinit(atof(tokens[1].c_str()), hasher);
 			}
 		}
-		else if (strcmp(tokens[0].c_str(), TEST_COMMAND) == 0)
+		else if (strcmp(tokens[0].c_str(), GENERATE_COMMAND) == 0)
 		{
-			// run test command
-			int testFileSize = atoi(tokens[1].c_str());
-			float validDocumentPourcentage = float(atof(tokens[2].c_str()));
-			int verificationType = BLOOM_AND_DB_VERIFICATION;
-			if ((tokens.size() == 5) || (tokens.size() == 4 && (strcmp(tokens[3].c_str(), USE_LAST_IF_EXISTS) != 0))) {
-				verificationType = atoi(tokens[3].c_str());
-			}
-			if (tokens.size() == 5 && (tokens[4].compare(USE_LAST_IF_EXISTS) != 0)) {
-				ok_or_ko = "KO";
-				response = ErreurManager::getError(INCORRECT_SYNTAX_ERROR);
-				throw new exception(response.c_str());
-			}
-			if (lastTestFilePath.compare("") == 0 || tokens.size() == 3 || (tokens.size() == 4 && tokens[3].compare(USE_LAST_IF_EXISTS) != 0))
+			if (tokens.size() != 4) 
 			{
+				ok_or_ko = "KO";
+			}
+			else 
+			{
+				int testFileSize = atoi(tokens[1].c_str());
+				float validDocumentPourcentage = float(atof(tokens[2].c_str()));
+				string testFilePath = tokens[3];
 				chrono::high_resolution_clock::time_point ta = chrono::high_resolution_clock::now();
-				lastTestFilePath = DEFAULT_FILE_PATH;
-				TestFileGenerator * generator = new TestFileGenerator(bloomFilterBasedDBController->getDataBaseHandler(), testFileSize, validDocumentPourcentage, lastTestFilePath);
+				TestFileGenerator * generator = new TestFileGenerator(bloomFilterBasedDBController->getDataBaseHandler(), testFileSize, validDocumentPourcentage, testFilePath);
 				generator->generate();
 				chrono::high_resolution_clock::time_point tb = chrono::high_resolution_clock::now();
 				unsigned long long duration = (tb - ta).count() / 1000000;
 				informations += "generation time : " + to_string(duration) + " ms, ";
 			}
-			chrono::high_resolution_clock::time_point ta = chrono::high_resolution_clock::now();
-			response = bloomFilterBasedDBController->processDocumentsTestFile(lastTestFilePath, verificationType);
-			chrono::high_resolution_clock::time_point tb = chrono::high_resolution_clock::now();
-			unsigned long long duration = (tb - ta).count() / 1000000;
-			informations += "test time : " + to_string(duration) + " ms, ";
 		}
+		else if (strcmp(tokens[0].c_str(), TEST_COMMAND) == 0)
+		{
+			if (tokens.size() != 3) {
+				ok_or_ko = "KO";
+			}
+			else
+			{
+				string testFilePath = tokens[1];
+				int verificationType = atoi(tokens[2].c_str());
+				chrono::high_resolution_clock::time_point ta = chrono::high_resolution_clock::now();
+				response = bloomFilterBasedDBController->processDocumentsTestFile(testFilePath, verificationType);
+				chrono::high_resolution_clock::time_point tb = chrono::high_resolution_clock::now();
+				unsigned long long duration = (tb - ta).count() / 1000000;
+				informations += "test time : " + to_string(duration) + " ms, ";
+			}
+		}
+		
 	}
 
 	}
@@ -194,7 +199,10 @@ vector<string> BloomFilterServer::getCommandArgument(string query)
 		{
 			return tokens;
 		}
-		else if (strcmp(tokens[0].c_str(), TEST_COMMAND) == 0 && tokens.size() >= 3 && tokens.size() <= 5) {
+		else if (strcmp(tokens[0].c_str(), GENERATE_COMMAND) == 0 && tokens.size() == 4) {
+			return tokens;
+		}
+		else if (strcmp(tokens[0].c_str(), TEST_COMMAND) == 0 && tokens.size() == 3) {
 			return tokens;
 		}
 	}
