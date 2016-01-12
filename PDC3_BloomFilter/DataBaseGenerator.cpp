@@ -30,6 +30,10 @@ bool DataBaseGenerator::createAndGenerateDB()
 		doc.documentType = getRandomString(documentTypeSize);
 		dataBaseHandler->addDocument(&doc);
 		i++;
+		if (i % 1000 == 0) {
+			cout << "number of generated documents : ";
+			cout << i << endl;
+		}
 	}
 	delete dataBaseHandler;
 	return true;
