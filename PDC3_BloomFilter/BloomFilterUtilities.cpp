@@ -2,11 +2,14 @@
 #include "stdafx.h"
 #include "BloomFilterUtilities.h"
 #include <math.h>
+#define UINT32_MAX  (0xffffffff)
 
 unsigned int getOptimalSizeForMaximalFPRate(double maximalFPRate, unsigned int databaseSize)
 {
 	if (maximalFPRate > 1 || maximalFPRate < 0) maximalFPRate = 1;
-	return ceill(((databaseSize+0.5)*log(1/maximalFPRate)) / (log(2)*log(2)))+1;
+	long double value = ceill(((databaseSize + 0.5)*log(1 / maximalFPRate)) / (log(2)*log(2))) + 1;
+	if (value > UINT32_MAX) value = UINT32_MAX;
+	return (int) value;
 }
 
 unsigned int getOptimalHashFunctionNumberForMaximalFPRateAndSize(double maximalFPRate, unsigned int databaseSize, unsigned int bloomFilterSize)
