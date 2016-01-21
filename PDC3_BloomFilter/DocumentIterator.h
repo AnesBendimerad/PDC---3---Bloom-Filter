@@ -5,10 +5,12 @@
 class DocumentIterator {
 private:
 	const CassResult* result;
+	CassStatement* statement;
+	CassSession* session;
 	CassIterator* rows;
 public:
-	DocumentIterator(const CassResult* result);
+	DocumentIterator(CassSession* session, CassStatement* statement, const CassResult* result);
 	Document * getNextDocument();
-	size_t getSize();
+	//	size_t getSize();
 	~DocumentIterator();
 };

@@ -16,8 +16,8 @@ unsigned int TestFileGenerator::getNonValidDocumentsCount()
 
 vector<Document*> TestFileGenerator::getNonValidDocuments()
 {
+	unsigned int dbSize = dbHandler->getDataBaseSize();
 	DocumentIterator * docIterator = dbHandler->getDocumentIterator();
-	unsigned int dbSize = docIterator->getSize();
 	vector<unsigned int> randomIntegers = getOrderedListOfRandomIntegers(getNonValidDocumentsCount(), dbSize);
 	vector<Document*> nonValidDocuments;
 	if (randomIntegers.size() == 0) {

@@ -10,6 +10,7 @@ private:
 	CassSession* session;
 	CassCluster* cluster;
 	CassFuture* connect_future;
+	unsigned int dbSize;
 	
 	const CassResult* getResultOfQuery(string query);
 public:

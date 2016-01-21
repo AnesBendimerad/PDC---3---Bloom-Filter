@@ -36,6 +36,7 @@ DataBaseHandler::DataBaseHandler(DataBaseConfiguration dataBaseConfiguration)
 	/* This operation will block until the result is ready */
 	CassError rc = cass_future_error_code(connect_future);
 	//printf("Database connection result: %s\n", cass_error_desc(rc));
+	dbSize = -1;
 }
 
 Document * DataBaseHandler::getDocumentByNumber(string documentNumber)
@@ -45,7 +46,7 @@ Document * DataBaseHandler::getDocumentByNumber(string documentNumber)
 		+ DOCUMENT_NUMBER + " = '" + documentNumber + "'";
 	const CassResult* result = getResultOfQuery(query);
 	if (result!=nullptr){
-		DocumentIterator * documentIterator=new DocumentIterator(result);
+		DocumentIterator * documentIterator=new DocumentIterator(nullptr, nullptr,result);
 		return documentIterator->getNextDocument();
 	}
 	else {
@@ -88,9 +89,25 @@ DocumentIterator * DataBaseHandler::getDocumentIterator(string countryCode)
 	if (countryCode.compare("") != 0) {
 		query = query + " WHERE " + COUNTRY_CODE + " = '" + countryCode + "'";
 	}
-	const CassResult* result = getResultOfQuery(query);
+	const CassResult* result= nullptr;
+	CassStatement* statement = cass_statement_new(query.c_str(), 0);
+	cass_statement_set_paging_size(statement, 200000);
+	CassFuture* result_future = cass_session_execute(session, statement);
+	if (cass_future_error_code(result_future) == CASS_OK) {
+		result = cass_future_get_result(result_future);
+	}
+	else {
+		/* Handle error */
+		const char* message;
+		size_t message_length;
+		cass_future_error_message(result_future, &message, &message_length);
+		throw new exception(message);
+		cass_statement_free(statement);
+		return nullptr;
+	}
+
 	if (result != nullptr) {
-		return new DocumentIterator(result);
+		return new DocumentIterator(session, statement,result);
 	}
 	else {
 		return nullptr;
@@ -99,10 +116,38 @@ DocumentIterator * DataBaseHandler::getDocumentIterator(string countryCode)
 
 unsigned int DataBaseHandler::getDataBaseSize()
 {
-	DocumentIterator* allDocumentIterator=this->getDocumentIterator();
-	unsigned int returned = allDocumentIterator->getSize();
-	delete allDocumentIterator;
-	return returned;
+	if (dbSize != -1) {
+		return dbSize;
+	}
+	string query = "SELECT * FROM " + dataBaseConfiguration.keySpace
+		+ "." + dataBaseConfiguration.table;
+	
+	const CassResult* result = nullptr;
+	CassStatement* statement = cass_statement_new(query.c_str(), 0);
+	cass_statement_set_paging_size(statement, 200000);
+	CassFuture* result_future = cass_session_execute(session, statement);
+	if (cass_future_error_code(result_future) == CASS_OK) {
+		result = cass_future_get_result(result_future);
+		dbSize = cass_result_row_count(result);
+		while (cass_result_has_more_pages(result)) {
+			cass_statement_set_paging_state(statement, result);
+			cass_result_free(result);
+			result_future = cass_session_execute(session, statement);
+			result = cass_future_get_result(result_future);
+			dbSize+= cass_result_row_count(result);
+		}
+		cass_result_free(result);
+		return dbSize;
+	}
+	else {
+		/* Handle error */
+		const char* message;
+		size_t message_length;
+		cass_future_error_message(result_future, &message, &message_length);
+		throw new exception(message);
+		cass_statement_free(statement);
+		return 0;
+	}
 }
 
 DataBaseHandler::~DataBaseHandler()

@@ -31,7 +31,7 @@ void BloomFilterBasedDBController::initBloomFilter()
 	}
 
 	BloomFilterStats* bloomFilterStats = BloomFilterStats::getInstance();
-	bloomFilterStats->set_dataBase_size(allDocumentIterator->getSize());
+	bloomFilterStats->set_dataBase_size(this->dbHandler->getDataBaseSize());
 	bloomFilterStats->set_bloom_filter_fp_rates();
 	delete allDocumentIterator;
 }
