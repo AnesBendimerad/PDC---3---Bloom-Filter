@@ -27,13 +27,13 @@ void BloomFilterServer::init()
 	std::cout << bloomFilterStats->getStringOfAllStats() << endl << "--------------------------------------------" << endl;
 	
 	string informations = to_string(duration) + " ms";
-	std::cout << "Initilization the Bloom Filter in " << informations << endl << "--------------------------------------------" << endl;
+	std::cout << "Initialization the Bloom Filter in " << informations << endl << "--------------------------------------------" << endl;
 }
 
 string BloomFilterServer::reinit(uint32_t bloomFilterSizeInBit, unsigned int bloomFilterHashFunctionsNumber, IHasher * bloomFilterHashFunction)
 {
 	this->bloomFilterBasedDBController->reinitBloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
-	std::cout << "Reinitilized the Bloom Filter" << endl;
+	std::cout << "Reinitialized the Bloom Filter" << endl;
 	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
 	return bloomFilterStats->getStringOfAllStats();
 }
@@ -41,7 +41,7 @@ string BloomFilterServer::reinit(uint32_t bloomFilterSizeInBit, unsigned int blo
 string BloomFilterServer::reinit(double bloomFilterMaximalFPRate, IHasher * bloomFilterHashFunction)
 {
 	this->bloomFilterBasedDBController->reinitBloomFilter(bloomFilterMaximalFPRate, bloomFilterHashFunction);
-	std::cout << "Reinitilized the Bloom Filter" << endl;
+	std::cout << "Reinitialized the Bloom Filter" << endl;
 	BloomFilterStats *bloomFilterStats = BloomFilterStats::getInstance();
 	return bloomFilterStats->getStringOfAllStats();
 }
@@ -56,7 +56,7 @@ string BloomFilterServer::executeRequest(string query)
 	string informations = "";
 	string answer = ""; //answer = <ok_or_ko> (<response>) (<informations>) <END/>
 
-	std::cout << "exectuting " << query << " ... " << endl;
+	std::cout << "executing " << query << " ... " << endl;
 
 	vector<string> tokens = this->getCommandArgument(query);
 	try {
