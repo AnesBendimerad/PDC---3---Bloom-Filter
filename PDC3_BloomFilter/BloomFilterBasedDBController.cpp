@@ -17,8 +17,8 @@ BloomFilterBasedDBController::BloomFilterBasedDBController(DataBaseConfiguration
 	this->dbHandler = new DataBaseHandler(dataBaseConfiguration);
 	if (bloomFilterHashFunction == nullptr) bloomFilterHashFunction = new MurmurHasher();
 	unsigned int dataBaseSize = this->dbHandler->getDataBaseSize();
-	unsigned int bloomFilterSizeInBit = getOptimalSizeForMaximalFPRate(bloomFilterMaximalFPRate,dataBaseSize);
-	unsigned int bloomFilterHashFunctionsNumber = getOptimalHashFunctionNumberForMaximalFPRateAndSize(bloomFilterMaximalFPRate, dataBaseSize, bloomFilterSizeInBit);
+	unsigned int bloomFilterHashFunctionsNumber = getOptimalHashFunctionNumber(bloomFilterMaximalFPRate);
+	unsigned int bloomFilterSizeInBit = getOptimalFilterSize(bloomFilterMaximalFPRate, dataBaseSize, bloomFilterHashFunctionsNumber);
 	this->bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
 }
 
@@ -31,7 +31,7 @@ void BloomFilterBasedDBController::initBloomFilter()
 	}
 
 	BloomFilterStats* bloomFilterStats = BloomFilterStats::getInstance();
-	bloomFilterStats->set_dataBase_size(this->dbHandler->getDataBaseSize());
+	bloomFilterStats->set_dataBase_size(allDocumentIterator->getSize());
 	bloomFilterStats->set_bloom_filter_fp_rates();
 	delete allDocumentIterator;
 }
@@ -49,8 +49,8 @@ void BloomFilterBasedDBController::reinitBloomFilter(double bloomFilterMaximalFP
 	delete this->bloomFilter;
 	if (bloomFilterHashFunction == nullptr) bloomFilterHashFunction = new MurmurHasher();
 	unsigned int dataBaseSize = this->dbHandler->getDataBaseSize();
-	unsigned int bloomFilterSizeInBit = getOptimalSizeForMaximalFPRate(bloomFilterMaximalFPRate, dataBaseSize);
-	unsigned int bloomFilterHashFunctionsNumber = getOptimalHashFunctionNumberForMaximalFPRateAndSize(bloomFilterMaximalFPRate, dataBaseSize, bloomFilterSizeInBit);
+	unsigned int bloomFilterHashFunctionsNumber = getOptimalHashFunctionNumber(bloomFilterMaximalFPRate);
+	unsigned int bloomFilterSizeInBit = getOptimalFilterSize(bloomFilterMaximalFPRate, dataBaseSize, bloomFilterHashFunctionsNumber);
 	this->bloomFilter = new BloomFilter(bloomFilterSizeInBit, bloomFilterHashFunctionsNumber, bloomFilterHashFunction);
 	this->initBloomFilter();
 }
